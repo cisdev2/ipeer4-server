@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/vendor/symfony/symfony/src/Symfony/Component/ClassLoader/Tests/Fixtures" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/symfony/symfony/src/Symfony/Component/ClassLoader/Tests/Fixtures/fallback" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/hautelook/templated-uri-router" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/hautelook/templated-uri-bundle" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/phpcollection/phpcollection/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/phpcollection/phpcollection/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/kriswallsmith/assetic/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/doctrine/common/tests/Doctrine/Tests/Common" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/symfony/swiftmailer-bundle" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/symfony/symfony/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/symfony/assetic-bundle" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/symfony/icu" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Tests/Fixtures" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/doctrine/dbal/lib" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/doctrine/orm/lib" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/doctrine/collections/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/doctrine/annotations/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/doctrine/inflector/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/doctrine/common/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/doctrine/cache/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/doctrine/doctrine-bundle" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/doctrine/common/lib" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/doctrine/lexer/lib" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/doctrine/cache/lib" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/doctrine/collections/lib" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/doctrine/inflector/lib" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/doctrine/annotations/lib" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/nelmio/api-doc-bundle" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/willdurand/negotiation/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/willdurand/negotiation/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/monolog/monolog/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/monolog/monolog/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/willdurand/hateoas-bundle" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/symfony/symfony/src/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/fallback" isTestSource="false" packagePrefix="Apc" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/symfony/symfony/src/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/alpha" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/symfony/symfony/src/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/beta" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/jms/metadata/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/jms/metadata/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/jms/parser-lib/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/jms/serializer-bundle" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/jms/serializer/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/jms/serializer/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/phpoption/phpoption/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/phpoption/phpoption/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/guzzle/http" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/guzzle/parser" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/guzzle/common" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/guzzle/stream" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/doctrine/doctrine-bundle/Doctrine/Bundle/DoctrineBundle/Tests/DependencyInjection" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/sensio/framework-extra-bundle" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/sensio/distribution-bundle" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/sensio/generator-bundle" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/willdurand/hateoas/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/willdurand/hateoas/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/nelmio/api-doc-bundle/Nelmio/ApiDocBundle" isTestSource="false" packagePrefix="NelmioApiDocBundle" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/symfony/symfony/src/Symfony/Component/ClassLoader/Tests/Fixtures/alpha" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/symfony/symfony/src/Symfony/Component/ClassLoader/Tests/Fixtures/beta" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/friendsofsymfony/rest-bundle" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/michelf/php-markdown" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vendor/psr/log" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="PHARS">
+        <CLASSES>
+          <root url="phar://$MODULE_DIR$/vendor/symfony/symfony/src/Symfony/Component/DependencyInjection/Tests/Fixtures/includes/ProjectWithXsdExtensionInPhar.phar" />
+        </CLASSES>
+        <SOURCES>
+          <root url="phar://$MODULE_DIR$/vendor/symfony/symfony/src/Symfony/Component/DependencyInjection/Tests/Fixtures/includes/ProjectWithXsdExtensionInPhar.phar" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+  </component>
+</module>
