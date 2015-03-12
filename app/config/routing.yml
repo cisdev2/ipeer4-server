@@ -1,3 +1,12 @@
+# The auto-generating api-doc is loaded here
 NelmioApiDocBundle:
   resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
   prefix:   /api/doc
+
+# We let the individual iPeer bundles load their own routing configuration
+IpeerUserBundle:
+  resource: "@IpeerUserBundle/Resources/config/routing.yml"
+  prefix:   /api
+IpeerCourseBundle:
+  resource: "@IpeerCourseBundle/Resources/config/routing.yml"
+  prefix:   /api

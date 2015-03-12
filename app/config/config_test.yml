@@ -1,3 +1,4 @@
+# run when executing tests
 imports:
     - { resource: config_dev.yml }
 
@@ -5,8 +6,8 @@ framework:
     test: ~
     session:
         storage_id: session.storage.mock_file
-    profiler:
-        enabled: false
+    #profiler:
+    #   enabled: false # false in regular Symfony REST Edition
 
 web_profiler:
     toolbar: false
@@ -14,3 +15,17 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+# Database config override
+# have the tests use sqlite instead of the "real" database
+doctrine:
+    dbal:
+        default_connection: default
+        connections:
+            default:
+                driver:   pdo_sqlite
+                path:     %kernel.cache_dir%/test.db
+
+# Speed up local tests
+liip_functional_test:
+    cache_sqlite_db: true

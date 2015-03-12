@@ -1,3 +1,4 @@
+# This file is run when in dev mode (via localhost and app_dev.php)
 imports:
     - { resource: config.yml }
 

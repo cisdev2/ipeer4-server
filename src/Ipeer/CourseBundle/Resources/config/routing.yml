@@ -1,0 +1,4 @@
+ubc_ipeer_user_user:
+    resource: "@IpeerCourseBundle/Controller/CourseController.php"
+    type: annotation
+

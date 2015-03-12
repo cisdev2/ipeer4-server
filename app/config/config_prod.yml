@@ -1,3 +1,4 @@
+# run when in production mode (accessed via app.php)
 imports:
     - { resource: config.yml }
 

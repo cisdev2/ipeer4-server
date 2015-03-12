@@ -1,3 +1,4 @@
+# TODO: ipeer: configure or remove this file as needed
 security:
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
