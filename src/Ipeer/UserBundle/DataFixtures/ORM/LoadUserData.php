@@ -10,13 +10,31 @@ use Ipeer\UserBundle\Entity\User;
 class LoadUserData extends AbstractFixture implements FixtureInterface
 {
 
-    static public $users = array(); // needs to be instantiated for self::$users line works
+    /**
+     * @var User[]
+     */
+    private static $users;
 
     /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager)
     {
+        $users = $this->getUsers();
+
+        for($i = 0; $i < count($users); $i++) {
+            $manager->persist($users[$i]);
+        }
+
+        $manager->flush();
+    }
+
+    /**
+     * @return User[]
+     *
+     * Ensure this function only gets called once
+     */
+    private static function makeUsers() {
         $userAdmin = new User();
         $userAdmin->setFirstName("Admin");
         $userAdmin->setLastName("Prime");
@@ -32,18 +50,21 @@ class LoadUserData extends AbstractFixture implements FixtureInterface
         $userInstructor->setLastName("Epsilon");
         $userInstructor->setEmail("instructor@ipeer.ubc");
 
-        // push database
-        $manager->persist($userAdmin);
-        $manager->persist($userStudent);
-        $manager->persist($userInstructor);
-        $manager->flush();
+        return array($userAdmin, $userStudent, $userInstructor);
+    }
 
-        // make raw objects available outside this fixture
-        $this->addReference("user-admin-prime", $userAdmin);
-        $this->addReference("user-student-alpha", $userStudent);
-        $this->addReference("user-instructor-epsilon", $userInstructor);
-        self::$users = array($userAdmin, $userStudent, $userInstructor);
-
-
+    /**
+     * @return User[]
+     *
+     * If the users have not been created, create them
+     * Otherwise return them
+     *
+     * This is needed because for each test case self:$users is reset and load() will only get run once
+     */
+    public static function getUsers() {
+        if(null == self::$users || count(self::$users) === 0) {
+            self::$users = self::makeUsers();
+        }
+        return self::$users;
     }
 }

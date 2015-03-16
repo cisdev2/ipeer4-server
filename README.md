@@ -1,9 +1,13 @@
 iPeer v4 Server
 ========================
 
+** Master branch **
 [![Build Status](https://travis-ci.org/cisdev2/ipeer4-server.svg?branch=master)](https://travis-ci.org/cisdev2/ipeer4-server)
 [![Code Climate](https://codeclimate.com/github/cisdev2/ipeer4-server/badges/gpa.svg)](https://codeclimate.com/github/cisdev2/ipeer4-server)
 [![Test Coverage](https://codeclimate.com/github/cisdev2/ipeer4-server/badges/coverage.svg)](https://codeclimate.com/github/cisdev2/ipeer4-server)
+
+** Dev branch **
+[![Build Status](https://travis-ci.org/cisdev2/ipeer4-server.svg?branch=dev)](https://travis-ci.org/cisdev2/ipeer4-server)
 
 Basics
 ------------------------
