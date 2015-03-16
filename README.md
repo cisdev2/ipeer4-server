@@ -17,7 +17,7 @@ To run the server:
 
     php app/console server:run
 
-Once running, check out the auto-generated api documentation at: http://localhost:8000/api/doc/
+Once running, check out the auto-generated api documentation at: [http://localhost:8000/api/doc/](http://localhost:8000/api/doc/). Change the port as needed.
 
 Database
 ------------------------
@@ -39,6 +39,8 @@ To reset the database, run:
 
 Tests
 ------------------------
+
+Tests are automatically run at Travis CI: [https://travis-ci.org/cisdev2/ipeer4-server](https://travis-ci.org/cisdev2/ipeer4-server)
 
 Tests can be run with `phpunit`. They run on a different database, so they don't affect the main one. Change `src` to a more specific path if you want to run a specific test. The `-c app` just loads the test config file from the `app` folder:
 
