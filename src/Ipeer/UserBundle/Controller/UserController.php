@@ -117,6 +117,6 @@ class UserController extends Controller
         $em->remove($user);
         $em->flush();
 
-        return (new Response())->setStatusCode(204);
+        return new Response('', 204);
     }
 }
