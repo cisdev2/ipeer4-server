@@ -16,4 +16,11 @@ before_script: composer install --prefer-source
 
 after_failure: "cat /home/travis/build/gimler/symfony-rest-edition/app/logs/test.log"
 
-script: phpunit -c app
+script: phpunit -c app --coverage-clover build/logs/clover.xml
+
+after_script:
+  - vendor/bin/test-reporter
+
+addons:
+  code_climate:
+    repo_token: c7cd1ff9a23bdc944f020a692bcee23e19844c981e6ee9643240461b7d250706
