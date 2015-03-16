@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Role
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="UBC\iPeer\CourseBundle\Entity\RoleRepository")
+ * @ORM\Entity(repositoryClass="Ipeer\CourseBundle\Entity\RoleRepositoryRoleRepository")
  */
 class Role
 {
@@ -27,7 +27,6 @@ class Role
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
-
 
     /**
      * Get id

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * CourseGroup
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="UBC\iPeer\CourseBundle\Entity\CourseGroupRepository")
+ * @ORM\Entity(repositoryClass="Ipeer\CourseBundle\Entity\CourseGroupRepository")
  */
 class CourseGroup
 {
@@ -56,12 +56,12 @@ class CourseGroup
     /**
      * Add enrollments
      *
-     * @param \UBC\iPeer\CourseBundle\Entity\Enrollment $enrollments
+     * @param Enrollment $enrollment
      * @return CourseGroup
      */
-    public function addEnrollment(\UBC\iPeer\CourseBundle\Entity\Enrollment $enrollments)
+    public function addEnrollment(Enrollment $enrollment)
     {
-        $this->enrollments[] = $enrollments;
+        $this->enrollments[] = $enrollment;
 
         return $this;
     }
@@ -69,11 +69,11 @@ class CourseGroup
     /**
      * Remove enrollments
      *
-     * @param \UBC\iPeer\CourseBundle\Entity\Enrollment $enrollments
+     * @param Enrollment $enrollment
      */
-    public function removeEnrollment(\UBC\iPeer\CourseBundle\Entity\Enrollment $enrollments)
+    public function removeEnrollment(Enrollment $enrollment)
     {
-        $this->enrollments->removeElement($enrollments);
+        $this->enrollments->removeElement($enrollment);
     }
 
     /**
@@ -89,10 +89,10 @@ class CourseGroup
     /**
      * Set course
      *
-     * @param \UBC\iPeer\CourseBundle\Entity\Course $course
+     * @param Course $course
      * @return CourseGroup
      */
-    public function setCourse(\UBC\iPeer\CourseBundle\Entity\Course $course = null)
+    public function setCourse(Course $course = null)
     {
         $this->course = $course;
 
@@ -102,7 +102,7 @@ class CourseGroup
     /**
      * Get course
      *
-     * @return \UBC\iPeer\CourseBundle\Entity\Course 
+     * @return Course
      */
     public function getCourse()
     {

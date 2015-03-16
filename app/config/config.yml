@@ -81,15 +81,19 @@ fos_rest:
     access_denied_listener:
         json: true
     body_listener: true
-    body_converter:       # The body_ lines allow for automatic conversion of the request body via
-            enabled: true # @ParamConverter("variableName", converter="fos_rest.request_body")
+    body_converter:        # The body_ lines allow for automatic conversion of the request body via
+            enabled: true  #   @ParamConverter("variableName", converter="fos_rest.request_body")
+            validate: true # Converted item gets run through Symfony validator
+            validation_errors_argument:  validationErrors
     routing_loader:
         default_format: json
         include_format: true
+    serializer:
+        serialize_null: true
 
 # Allows for cross domain requests
 # Needed for development because front-end & back-end are run on different locahost ports
-# In production, may need to be modified and should be combined with authentication plan
+# In production, may need to be modified and might be combined with authentication
 nelmio_cors:
     defaults:
         allow_credentials: false
@@ -113,3 +117,12 @@ nelmio_cors:
             allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
             max_age: 3600
             hosts: ['^api\.']
+
+# Any services that should run throughout the flow of execution
+services:
+    # Custom service to return a 400 if the validator failed on a POST request for an entity
+    # Used in conjunction with "body_converter" configuration above
+    request_body.validation_exception_handler:
+        class: Ipeer\ApiUtilityBundle\EventListener\ValidationErrorListener
+        tags: # the priority needs to be less than the default of zero to receive the validation errors
+            - { name: kernel.event_listener, event: kernel.controller, priority: -100, method: onKernelController }

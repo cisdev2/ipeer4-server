@@ -4,12 +4,13 @@ namespace Ipeer\CourseBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Ipeer\UserBundle\Entity\User;
 
 /**
  * Enrollment
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="UBC\iPeer\CourseBundle\Entity\EnrollmentRepository")
+ * @ORM\Entity(repositoryClass="Ipeer\CourseBundle\Entity\EnrollmentRepository")
  */
 class Enrollment
 {
@@ -39,7 +40,7 @@ class Enrollment
     private $courseGroups;
 
     /**
-     * @var \Ipeer\UserBundle\Entity\User
+     * @var User
      *
      * @ORM\ManyToOne(targetEntity="Ipeer\UserBundle\Entity\User", inversedBy="enrollments")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
@@ -89,10 +90,10 @@ class Enrollment
     }
 
     /**
-     * @param \UBC\iPeer\UserBundle\Entity\User $user
+     * @param User $user
      * @return Enrollment
      */
-    public function setUser(\UBC\iPeer\UserBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -100,7 +101,7 @@ class Enrollment
     }
 
     /**
-     * @return \UBC\iPeer\UserBundle\Entity\User 
+     * @return User
      */
     public function getUser()
     {
@@ -136,10 +137,10 @@ class Enrollment
     }
 
     /**
-     * @param \UBC\iPeer\CourseBundle\Entity\Role $role
+     * @param Role $role
      * @return Enrollment
      */
-    public function setRole(\UBC\iPeer\CourseBundle\Entity\Role $role = null)
+    public function setRole(Role $role = null)
     {
         $this->role = $role;
 
@@ -147,7 +148,7 @@ class Enrollment
     }
 
     /**
-     * @return \UBC\iPeer\CourseBundle\Entity\Role 
+     * @return Role
      */
     public function getRole()
     {

@@ -5,8 +5,8 @@ namespace Ipeer\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
-use JMS\Serializer\Annotation\ReadOnly;
 use Symfony\Component\Validator\Constraints as Assert;
+use Ipeer\CourseBundle\Entity\Enrollment;
 
 /**
  * User
@@ -169,12 +169,12 @@ class User
     /**
      * Add enrollments
      *
-     * @param \Ipeer\CourseBundle\Entity\Enrollment $enrollments
+     * @param Enrollment $enrollment
      * @return User
      */
-    public function addEnrollment(\Ipeer\CourseBundle\Entity\Enrollment $enrollments)
+    public function addEnrollment(Enrollment $enrollment)
     {
-        $this->enrollments[] = $enrollments;
+        $this->enrollments[] = $enrollment;
 
         return $this;
     }
@@ -182,11 +182,11 @@ class User
     /**
      * Remove enrollments
      *
-     * @param \Ipeer\CourseBundle\Entity\Enrollment $enrollments
+     * @param Enrollment $enrollment
      */
-    public function removeEnrollment(\Ipeer\CourseBundle\Entity\Enrollment $enrollments)
+    public function removeEnrollment(Enrollment $enrollment)
     {
-        $this->enrollments->removeElement($enrollments);
+        $this->enrollments->removeElement($enrollment);
     }
 
     /**

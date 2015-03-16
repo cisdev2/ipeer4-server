@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new Bazinga\Bundle\RestExtraBundle\BazingaRestExtraBundle(),
             new Ipeer\UserBundle\IpeerUserBundle(),
             new Ipeer\CourseBundle\IpeerCourseBundle(),
+            new Ipeer\ApiUtilityBundle\IpeerApiUtilityBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

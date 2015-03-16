@@ -3,63 +3,19 @@
 namespace Ipeer\UserBundle\Tests\Controller;
 
 
-use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Ipeer\ApiUtilityBundle\Test\JSONTestCase;
 use Ipeer\UserBundle\DataFixtures\ORM\LoadUserData;
-use Symfony\Component\BrowserKit\Client;
-use Symfony\Component\HttpFoundation\Response;
 
-class UserControllerTest extends WebTestCase
+class UserControllerTest extends JSONTestCase
 {
 
     /*
      * =============================================
-     * Helper Methods
+     * Fixtures to load in this test
      * =============================================
      */
 
-    /**
-     * @var Client
-     * */
-    private $client;
-
     private $standardSampleDate = array('Ipeer\UserBundle\DataFixtures\ORM\LoadUserData');
-
-    /**
-     * @param string $method The HTTP method for the request
-     * @param string $route The URL/route to access
-     * @param string $body Body of request
-     * @param int $statusCode Expected HTTP Status code
-     * @param bool $decode Should the response be run through json_decode?
-     * @return mixed|null|object
-     */
-    private function getJSONResponseFrom($method, $route, $body = '', $statusCode = 200, $decode = true) {
-        $this->client->request(
-            $method,
-            $route,
-            array('Accept' => 'application/json'),
-            array(),
-            array("CONTENT_TYPE" => "application/json"), // since the server only accepts json for deserialization
-            $body
-        );
-        $response = $this->client->getResponse();
-        $this->assertJsonResponse($response, $statusCode);
-        return $decode ? json_decode($response->getContent(), true) : $response;
-    }
-
-    public function setUp(){
-        $this->client = static::createClient();
-    }
-
-    protected function assertJsonResponse(Response $response, $statusCode = 200) {
-        $this->assertEquals(
-            $statusCode, $response->getStatusCode(),
-            $response->getContent()
-        );
-        $this->assertTrue(
-            $response->headers->contains('Content-Type', 'application/json'),
-            $response->headers
-        );
-    }
 
     /*
      * =============================================
@@ -69,13 +25,13 @@ class UserControllerTest extends WebTestCase
 
     public function testIndexActionEmpty() {
         $this->loadFixtures(array());
-        $response = $this->getJSONResponseFrom("GET", $this->getUrl('user'));
+        $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('user'));
         $this->assertCount(0, $response["users"]);
     }
 
     public function testIndexAction() {
         $this->loadFixtures($this->standardSampleDate);
-        $response = $this->getJSONResponseFrom("GET", $this->getUrl('user'));
+        $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('user'));
         $this->assertCount(3, $response["users"]);
     }
 
@@ -84,14 +40,14 @@ class UserControllerTest extends WebTestCase
 
         $route =  $this->getUrl('user');
 
-        $data = $this->getJSONResponseFrom("POST", $route,
+        $data = $this->getAndTestJSONResponseFrom("POST", $route,
             '{"first_name": "Test User", "last_name": "Action Test", "email": "testcreateaction@ipeer.ubc"}');
         $this->assertEquals(1, $data['id']);
         $this->assertEquals("Test User", $data['first_name']);
         $this->assertEquals("Action Test", $data['last_name']);
         $this->assertEquals("testcreateaction@ipeer.ubc", $data['email']);
 
-        $data = $this->getJSONResponseFrom("POST", $route,
+        $data = $this->getAndTestJSONResponseFrom("POST", $route,
             '{"first_name": "Test2", "last_name": "ActionTwo", "email": "testcreateaction2@ipeer.ubc"}');
         $this->assertEquals(2, $data['id']);
         $this->assertEquals("Test2", $data['first_name']);
@@ -99,8 +55,16 @@ class UserControllerTest extends WebTestCase
         $this->assertEquals("testcreateaction2@ipeer.ubc", $data['email']);
 
         $route =  $this->getUrl('user');
-        $response = $this->getJSONResponseFrom("GET", $route);
+        $response = $this->getAndTestJSONResponseFrom("GET", $route);
         $this->assertCount(2, $response["users"]);
+    }
+
+    public function testCreateActionInvalid() {
+        $route =  $this->getUrl('user');
+
+        $this->getAndTestJSONResponseFrom("POST", $route,
+            '{"last_name": "Action Test", "email": "testcreateaction@ipeer.ubc"}', 400);
+
     }
 
     public function testShowAction() {
@@ -108,8 +72,8 @@ class UserControllerTest extends WebTestCase
 
         for($i = 1; $i <= count(LoadUserData::$users); $i++) {
             $route =  $this->getUrl('user_show', array('id' => $i));
-            $response = $this->getJSONResponseFrom("GET", $route);
-            $data = $response['user'];
+            $response = $this->getAndTestJSONResponseFrom("GET", $route);
+            $data = $response;
             $this->assertEquals(LoadUserData::$users[$i-1]->getFirstName(), $data['first_name']);
             $this->assertEquals(LoadUserData::$users[$i-1]->getLastName(), $data['last_name']);
             $this->assertEquals(LoadUserData::$users[$i-1]->getEmail(), $data['email']);
@@ -120,17 +84,17 @@ class UserControllerTest extends WebTestCase
         $this->loadFixtures($this->standardSampleDate);
 
         $route =  $this->getUrl('user_update', array('id' => 1));
-        $this->getJSONResponseFrom('POST', $route,
+        $this->getAndTestJSONResponseFrom('POST', $route,
             '{"id": 1, "first_name": "Update1", "last_name": "Action Test", "email": "testcreateaction@ipeer.ubc"}');
         $route =  $this->getUrl('user_update', array('id' => 2));
-        $this->getJSONResponseFrom('POST', $route,
+        $this->getAndTestJSONResponseFrom('POST', $route,
             '{"id": 2, "first_name": "Update2", "last_name": "ActionTwo", "email": "testcreateaction2@ipeer.ubc"}');
         $route =  $this->getUrl('user_update', array('id' => 3));
-        $this->getJSONResponseFrom('POST', $route,
+        $this->getAndTestJSONResponseFrom('POST', $route,
             '{"id": 3, "first_name": "Update3", "last_name": "ActionThree", "email": "testcreateaction3@ipeer.ubc"}');
 
         $route =  $this->getUrl('user');
-        $response = $this->getJSONResponseFrom('GET', $route);
+        $response = $this->getAndTestJSONResponseFrom('GET', $route);
         $data = $response["users"];
         $this->assertCount(3, $data); //still 3 users; new ones should not have been created
 
@@ -142,12 +106,16 @@ class UserControllerTest extends WebTestCase
 
     public function testDeleteAction() {
         $this->loadFixtures($this->standardSampleDate);
-/*
+
         $route =  $this->getUrl('user_delete', array('id' => 1));
-        $this->client->request('DELETE', $route, array('ACCEPT' => 'application/json'));
+        $this->getAndTestJSONResponseFrom('DELETE', $route, '', 204);
+
         $route =  $this->getUrl('user_delete', array('id' => 2));
-        $this->client->request('DELETE', $route, array('ACCEPT' => 'application/json'));
-*/
+        $this->getAndTestJSONResponseFrom('DELETE', $route, '', 204);
+
+        $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('user'));
+        $this->assertCount(1, $response["users"]);
+
     }
 
 }
