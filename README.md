@@ -1,6 +1,8 @@
 iPeer v4 Server
 ========================
 
+[![Build Status](https://travis-ci.org/cisdev2/ipeer4-server.svg?branch=master)](https://travis-ci.org/cisdev2/ipeer4-server)
+
 Basics
 ------------------------
 You will need composer: https://getcomposer.org/
