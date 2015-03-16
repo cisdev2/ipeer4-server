@@ -72,9 +72,10 @@ fos_rest:
         media_type:
             version_regex: '/(v|version)=(?P<version>[0-9\.]+)/'
     exception:
-        codes:
+        codes: # Specify an exception and what HTTP code it should turn into
             'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
             'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
+            'Symfony\Component\HttpKernel\Exception\NotFoundHttpException': 404
         messages:
             'Symfony\Component\Routing\Exception\ResourceNotFoundException': true
     allowed_methods_listener: true
@@ -84,7 +85,7 @@ fos_rest:
     body_converter:        # The body_ lines allow for automatic conversion of the request body via
             enabled: true  #   @ParamConverter("variableName", converter="fos_rest.request_body")
             validate: true # Converted item gets run through Symfony validator
-            validation_errors_argument:  validationErrors
+            validation_errors_argument:  validationErrors # the ValidationErrorListener depends on the name of this
     routing_loader:
         default_format: json
         include_format: true

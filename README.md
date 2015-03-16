@@ -3,7 +3,7 @@ iPeer v4 Server
 
 [![Build Status](https://travis-ci.org/cisdev2/ipeer4-server.svg?branch=master)](https://travis-ci.org/cisdev2/ipeer4-server)
 [![Code Climate](https://codeclimate.com/github/cisdev2/ipeer4-server/badges/gpa.svg)](https://codeclimate.com/github/cisdev2/ipeer4-server)
-
+[![Test Coverage](https://codeclimate.com/github/cisdev2/ipeer4-server/badges/coverage.svg)](https://codeclimate.com/github/cisdev2/ipeer4-server)
 
 Basics
 ------------------------
@@ -42,6 +42,8 @@ Tests
 
 Tests are automatically run at Travis CI: [https://travis-ci.org/cisdev2/ipeer4-server](https://travis-ci.org/cisdev2/ipeer4-server)
 
-Tests can be run with `phpunit`. They run on a different database, so they don't affect the main one. Change `src` to a more specific path if you want to run a specific test. The `-c app` just loads the test config file from the `app` folder:
+However, Travis can take a while to run, so we recommend testing manually and just testing the code/module/class your currently working on.
+
+Tests can be run with `phpunit`. They run on a different database, so they don't affect the main one. Change `src` to a more specific path/file if you want to run a specific test. The `-c app` just loads the test config file from the `app` folder:
 
     phpunit -c app src

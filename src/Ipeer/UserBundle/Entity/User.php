@@ -55,6 +55,7 @@ class User
      * @var string
      *
      * @Assert\Email()
+     * @Assert\NotBlank()
      *
      * @ORM\Column(name="email", type="string", length=255)
      *
@@ -62,13 +63,20 @@ class User
      */
     private $email;
 
-
     /**
      * @var
      *
      * @ORM\OneToMany(targetEntity="Ipeer\CourseBundle\Entity\Enrollment", mappedBy="user")
      */
     private $enrollments;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->enrollments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -157,13 +165,6 @@ class User
     public function getEmail()
     {
         return $this->email;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->enrollments = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

@@ -15,7 +15,9 @@ class UserControllerTest extends JSONTestCase
      * =============================================
      */
 
-    private $standardSampleDate = array('Ipeer\UserBundle\DataFixtures\ORM\LoadUserData');
+    private $standardSampleDate = array(
+        'Ipeer\UserBundle\DataFixtures\ORM\LoadUserData',
+    );
 
     /*
      * =============================================
@@ -63,21 +65,47 @@ class UserControllerTest extends JSONTestCase
         $route =  $this->getUrl('user');
 
         $this->getAndTestJSONResponseFrom("POST", $route,
+            '', 400);
+        $this->getAndTestJSONResponseFrom("POST", $route,
+            '{}', 400);
+        $this->getAndTestJSONResponseFrom("POST", $route,
             '{"last_name": "Action Test", "email": "testcreateaction@ipeer.ubc"}', 400);
+        $this->getAndTestJSONResponseFrom("POST", $route,
+            '{"first_name": "Action Test", "email": "testcreateaction@ipeer.ubc"}', 400);
+        $this->getAndTestJSONResponseFrom("POST", $route,
+            '{"first_name": "Action Test", "last_name": "Action Test"}', 400);
+        $this->getAndTestJSONResponseFrom("POST", $route,
+            '{"first_name": "Action Test", "last_name": "Action Test", "email": "testcreateaction"}', 400);
+        $this->getAndTestJSONResponseFrom("POST", $route,
+            '{"first_name": "Action Test", "last_name": "Action Test", "email": "testcreateaction@"}', 400);
+        $this->getAndTestJSONResponseFrom("POST", $route,
+            '{"first_name": "Action Test", "last_name": "Action Test", "email": "testcreateaction@com"}', 400);
 
     }
 
     public function testShowAction() {
         $this->loadFixtures($this->standardSampleDate);
 
+        $this->assertTrue(count(LoadUserData::$users) > 0,
+            'LoadUserData::$users not being loaded properly. Will affect other tests');
+
         for($i = 1; $i <= count(LoadUserData::$users); $i++) {
             $route =  $this->getUrl('user_show', array('id' => $i));
-            $response = $this->getAndTestJSONResponseFrom("GET", $route);
-            $data = $response;
+            $data = $this->getAndTestJSONResponseFrom("GET", $route);
             $this->assertEquals(LoadUserData::$users[$i-1]->getFirstName(), $data['first_name']);
             $this->assertEquals(LoadUserData::$users[$i-1]->getLastName(), $data['last_name']);
             $this->assertEquals(LoadUserData::$users[$i-1]->getEmail(), $data['email']);
         }
+    }
+
+    public function testShowActionInvalid() {
+        $this->loadFixtures($this->standardSampleDate);
+
+        $route =  $this->getUrl('user_show', array('id' => 0));
+        $this->getAndTestJSONResponseFrom("GET", $route, '', 404);
+
+        $route =  $this->getUrl('user_show', array('id' => count(LoadUserData::$users) + 1));
+        $this->getAndTestJSONResponseFrom("GET", $route, '', 404);
     }
 
     public function testUpdateAction() {
@@ -104,6 +132,13 @@ class UserControllerTest extends JSONTestCase
 
     }
 
+    public function testUpdateActionInvalid() {
+        $this->loadFixtures($this->standardSampleDate);
+
+
+
+    }
+
     public function testDeleteAction() {
         $this->loadFixtures($this->standardSampleDate);
 
@@ -115,6 +150,9 @@ class UserControllerTest extends JSONTestCase
 
         $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('user'));
         $this->assertCount(1, $response["users"]);
+    }
+
+    public function testDeleteActionInvalid() {
 
     }
 
