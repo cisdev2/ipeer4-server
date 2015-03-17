@@ -21,6 +21,12 @@ class UserControllerTest extends JSONTestCase
 
     private $maxLoopLimit = 3; // just loop through 3 users at most in any case
 
+    private static $users;
+
+    public static function setUpBeforeClass() {
+        self::$users = LoadUserData::getUsers();
+    }
+
     /**
      * @param User $user
      * @param User[] $userArray
@@ -46,16 +52,16 @@ class UserControllerTest extends JSONTestCase
 
     public function testIndexAction() {
         $this->loadFixtures($this->standardSampleDate);
-        $users = LoadUserData::getUsers();
 
-        $this->assertTrue(count($users) > 0,
+        $this->assertTrue(count(self::$users) > 0,
             'LoadUserData::$users not being loaded properly. Will affect other tests');
 
-        $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('user'))["users"];
-        $this->assertCount(count($users), $response);
+        $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('user'));
+        $response = $response["users"];
+        $this->assertCount(count(self::$users), $response);
 
         for($i = 0; $i < $this->maxLoopLimit; $i++) {
-            $this->assertUserEquals($users[$i], $response[$i]);
+            $this->assertUserEquals(self::$users[$i], $response[$i]);
         }
     }
 
@@ -107,12 +113,11 @@ class UserControllerTest extends JSONTestCase
 
     public function testShowAction() {
         $this->loadFixtures($this->standardSampleDate);
-        $users = LoadUserData::getUsers();
 
         for($i = 0; $i < $this->maxLoopLimit; $i++) {
             $route =  $this->getUrl('user_show', array('id' => $i+1));
             $data = $this->getAndTestJSONResponseFrom("GET", $route);
-            $this->assertUserEquals($users[$i], $data);
+            $this->assertUserEquals(self::$users[$i], $data);
         }
     }
 
@@ -128,7 +133,6 @@ class UserControllerTest extends JSONTestCase
 
     public function testUpdateAction() {
         $this->loadFixtures($this->standardSampleDate);
-        $users = LoadUserData::getUsers();
 
         $route =  $this->getUrl('user_update', array('id' => 1));
         $this->getAndTestJSONResponseFrom('POST', $route,
@@ -145,14 +149,13 @@ class UserControllerTest extends JSONTestCase
         $data = $response["users"];
         $this->assertCount(3, $data); //still 3 users; new ones should not have been created
 
-        for($i = 1; $i <= count($users); $i++) {
+        for($i = 1; $i <= count(self::$users); $i++) {
             $this->assertEquals($data[$i-1]["first_name"], "Update".$i);
         }
     }
 
     public function testUpdateActionInvalid() {
         $this->loadFixtures($this->standardSampleDate);
-        $users = LoadUserData::getUsers();
 
         $route =  $this->getUrl('user_update', array('id' => 1));
         $this->getAndTestJSONResponseFrom('POST', $route,
@@ -170,7 +173,7 @@ class UserControllerTest extends JSONTestCase
         $this->assertCount(3, $data); //still 3 users; new ones should not have been created
 
         for($i = 1; $i < $this->maxLoopLimit; $i++) {
-            $this->assertEquals($data[$i]["first_name"], $users[$i]->getFirstName());
+            $this->assertEquals($data[$i]["first_name"], self::$users[$i]->getFirstName());
         }
     }
 
@@ -194,7 +197,11 @@ class UserControllerTest extends JSONTestCase
     }
 
     public function testDeleteActionInvalid() {
+        $route =  $this->getUrl('user_delete', array('id' => count(self::$users) + 1));
+        $this->getAndTestJSONResponseFrom('DELETE', $route, '', 404);
 
+        $route =  $this->getUrl('user_delete', array('id' => 0));
+        $this->getAndTestJSONResponseFrom('DELETE', $route, '', 404);
     }
 
 }

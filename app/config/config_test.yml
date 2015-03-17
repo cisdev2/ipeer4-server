@@ -5,7 +5,7 @@ imports:
 framework:
     test: ~
     session:
-        storage_id: session.storage.mock_file
+        storage_id: session.storage.filesystem
     #profiler:
     #   enabled: false # false in regular Symfony REST Edition
 

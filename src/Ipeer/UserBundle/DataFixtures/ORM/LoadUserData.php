@@ -20,7 +20,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $users = $this->getUsers();
+        $users = self::getUsers();
 
         for($i = 0; $i < count($users); $i++) {
             $manager->persist($users[$i]);
@@ -59,7 +59,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface
      * If the users have not been created, create them
      * Otherwise return them
      *
-     * This is needed because for each test case self:$users is reset and load() will only get run once
+     * This is needed because of liip_functional_test: cache_sqlite_db: true
      */
     public static function getUsers() {
         if(null == self::$users || count(self::$users) === 0) {
