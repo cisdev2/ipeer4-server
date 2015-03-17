@@ -17,8 +17,7 @@ after_failure: "cat /home/travis/build/gimler/symfony-rest-edition/app/logs/test
 script: phpunit -c app --coverage-clover build/logs/clover.xml
 
 after_script:
-  - ls
-  - ./vendor/bin/test-reporter
+  - ./bin/test-reporter
 
 addons:
   code_climate:
