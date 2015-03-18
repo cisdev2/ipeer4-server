@@ -121,9 +121,21 @@ nelmio_cors:
 
 # Any services that should run throughout the flow of execution
 services:
-    # Custom service to return a 400 if the validator failed on a POST request for an entity
+    # Custom service to return a HTTP 400 if the validator failed on a POST/update/create request for an entity
     # Used in conjunction with "body_converter" configuration above
     request_body.validation_exception_handler:
         class: Ipeer\ApiUtilityBundle\EventListener\ValidationErrorListener
         tags: # the priority needs to be less than the default of zero to receive the validation errors
             - { name: kernel.event_listener, event: kernel.controller, priority: -100, method: onKernelController }
+
+nelmio_api_doc:
+    name: 'iPeer4 API Documentation'
+    sandbox:
+        body_format:
+            formats:
+                - json
+            default_format: json
+        request_format:
+            formats:
+                json: application/json
+                

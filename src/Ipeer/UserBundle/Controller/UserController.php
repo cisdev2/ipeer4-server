@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Ipeer\UserBundle\Entity\User;
-use Symfony\Component\HttpFoundation\Response;
+use FOS\RestBundle\Controller\Annotations as Rest;
 
 /**
  * User controller.
@@ -76,35 +76,36 @@ class UserController extends Controller
     /**
      * Edits an existing User entity.
      *
-     * @param User $user
-     * @param integer $id
+     * @param User $user The data the user submitted
+     * @param User $id The id of the user to update
      * @return array
      *
      * @ApiDoc()
      *
      * @ParamConverter("user", converter="fos_rest.request_body")
+     * @ParamConverter("id", class="IpeerUserBundle:User")
      *
      * @Route("/{id}", name="user_update")
      * @Method("POST")
      */
-    public function updateAction(User $user, $id)
+    public function updateAction(User $id, User $user)
     {
-        $user->setId($id);
+        // inject the id value from the URL
+        // (ensures update instead of creating a new duplicate)
+        $user->setId($id->getId());
 
         $em = $this->getDoctrine()->getManager();
         $em->merge($user);
-
         $em->flush();
 
-        return array(
-            'user' => $user,
-        );
+        return $user;
     }
+
     /**
      * Deletes a User entity.
      *
      * @param User $user
-     * @return Response
+     * @Rest\View(statusCode=204)
      *
      * @ApiDoc()
      *
@@ -116,7 +117,5 @@ class UserController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($user);
         $em->flush();
-
-        return new Response('', 204);
     }
 }
