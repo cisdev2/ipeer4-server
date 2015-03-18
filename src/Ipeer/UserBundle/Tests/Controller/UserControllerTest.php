@@ -47,6 +47,7 @@ class UserControllerTest extends JSONTestCase
     public function testIndexActionEmpty() {
         $this->loadFixtures(array());
         $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('user'));
+        // When no users present, get an empty array
         $this->assertCount(0, $response["users"]);
     }
 
@@ -58,12 +59,15 @@ class UserControllerTest extends JSONTestCase
 
         $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('user'));
         $response = $response["users"];
+        // Expects an array of users
         $this->assertCount(count(self::$users), $response);
 
+        // Assume that users come back in the same order
         for($i = 0; $i < $this->maxLoopLimit; $i++) {
             $this->assertUserEquals(self::$users[$i], $response[$i]);
         }
     }
+
 
     public function testCreateAction() {
         $this->loadFixtures(array());
@@ -86,12 +90,13 @@ class UserControllerTest extends JSONTestCase
 
         $route =  $this->getUrl('user');
         $response = $this->getAndTestJSONResponseFrom("GET", $route);
-        $this->assertCount(2, $response["users"]);
+        $this->assertCount(2, $response["users"]); // the two users we created
     }
 
     public function testCreateActionInvalid() {
         $route =  $this->getUrl('user');
 
+        // various corruptions of data (blank, empty object, missing various fields)
         $this->getAndTestJSONResponseFrom("POST", $route,
             '', 400);
         $this->getAndTestJSONResponseFrom("POST", $route,
@@ -114,6 +119,7 @@ class UserControllerTest extends JSONTestCase
     public function testShowAction() {
         $this->loadFixtures($this->standardSampleDate);
 
+        // assumes ids were assigned in same order as indices in fixtures data
         for($i = 0; $i < $this->maxLoopLimit; $i++) {
             $route =  $this->getUrl('user_show', array('id' => $i+1));
             $data = $this->getAndTestJSONResponseFrom("GET", $route);
@@ -157,15 +163,27 @@ class UserControllerTest extends JSONTestCase
     public function testUpdateActionInvalid() {
         $this->loadFixtures($this->standardSampleDate);
 
+        // various missing data examples
         $route =  $this->getUrl('user_update', array('id' => 1));
         $this->getAndTestJSONResponseFrom('POST', $route,
             '{"id": 2, "last_name": "Action Test", "email": "testcreateaction@ipeer.ubc"}', 400);
+        $this->getAndTestJSONResponseFrom('POST', $route,
+            '', 400);
+        $this->getAndTestJSONResponseFrom('POST', $route,
+            '{}', 400);
         $route =  $this->getUrl('user_update', array('id' => 2));
         $this->getAndTestJSONResponseFrom('POST', $route,
             '{"id": 4, "first_name": "Update2", "email": "testcreateaction2@ipeer.ubc"}', 400);
         $route =  $this->getUrl('user_update', array('id' => 3));
         $this->getAndTestJSONResponseFrom('POST', $route,
             '{"id": 1, "first_name": "Update3", "last_name": "ActionThree"}', 400);
+        $route =  $this->getUrl('user_update', array('id' => count(self::$users)+1));
+        // valid and invalid updates to a non-existent user should 404
+        $this->getAndTestJSONResponseFrom('POST', $route,
+            '{"id": 1, "first_name": "Update3", "last_name": "ActionThree"}', 404);
+        $route =  $this->getUrl('user_update', array('id' => count(self::$users)+1));
+        $this->getAndTestJSONResponseFrom('POST', $route,
+            '{"first_name": "Update3", "last_name": "ActionThree", "email": "testcreateaction3@ipeer.ubc"}', 404);
 
         $route =  $this->getUrl('user');
         $response = $this->getAndTestJSONResponseFrom('GET', $route);
@@ -187,8 +205,9 @@ class UserControllerTest extends JSONTestCase
         $this->getAndTestJSONResponseFrom('DELETE', $route, '', 204);
 
         $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('user'));
-        $this->assertCount(1, $response["users"]);
+        $this->assertCount(count(self::$users)-2, $response["users"]); //removed 2 users
 
+        // check that the users truly no longer exist
         $route =  $this->getUrl('user_update', array('id' => 1));
         $this->getAndTestJSONResponseFrom("GET", $route, '', 404);
 
@@ -197,6 +216,7 @@ class UserControllerTest extends JSONTestCase
     }
 
     public function testDeleteActionInvalid() {
+        // users that don't exist in the first place should 404
         $route =  $this->getUrl('user_delete', array('id' => count(self::$users) + 1));
         $this->getAndTestJSONResponseFrom('DELETE', $route, '', 404);
 
