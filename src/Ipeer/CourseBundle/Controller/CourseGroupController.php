@@ -10,11 +10,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Ipeer\CourseBundle\Entity\CourseGroup;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Ipeer\CourseBundle\Entity\Course;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Ipeer\UserBundle\Entity\User;
 
 /**
  * Group controller.
  *
- * @Route("courses/{course}/groups")
+ * @Route("/courses/{course}/groups")
  */
 class CourseGroupController extends Controller
 {
@@ -27,10 +29,7 @@ class CourseGroupController extends Controller
      *
      * @return array
      *
-     * @ApiDoc(
-     *  resource=true,
-     *  statusCodes={200=""}
-     * )
+     * @ApiDoc(resource=true)
      *
      * @Route("", name="group")
      * @Method("GET")
@@ -48,14 +47,18 @@ class CourseGroupController extends Controller
      * @param CourseGroup $group
      * @ParamConverter("group", converter="fos_rest.request_body")
      *
+     * @param Course $course
+     * @ParamConverter("course", class="IpeerCourseBundle:Course")
+     *
      * @return CourseGroup
      *
-     * @ApiDoc(statusCodes={200="",400=""})
+     * @ApiDoc()
      * @Route("", name="group_create")
      * @Method("POST")
      */
-    public function createAction(CourseGroup $group)
+    public function createAction(Course $course, CourseGroup $group)
     {
+        $group->setCourse($course);
         $em = $this->getDoctrine()->getManager();
         $em->persist($group);
         $em->flush();
@@ -67,61 +70,146 @@ class CourseGroupController extends Controller
      * Finds and displays a Group entity.
      *
      * @param CourseGroup $group
+     * @ParamConverter("group", class="IpeerCourseBundle:CourseGroup")
+     *
+     * @param Course $course
+     * @ParamConverter("course", class="IpeerCourseBundle:Course")
      *
      * @return CourseGroup
      *
-     * @ApiDoc(statusCodes={200="",404=""})
+     * @ApiDoc()
      * @Route("/{id}", name="group_show")
      * @Method("GET")
      */
-    public function showAction(CourseGroup $group)
+    public function showAction(CourseGroup $group, Course $course)
     {
-        return $group;
+        if($group->getCourse() === $course) {
+            return array("group" => $group, "members" => $group->getEnrollments());
+        } else {
+            throw new NotFoundHttpException();
+        }
     }
 
     /**
      * Edits an existing Group entity.
      *
-     * @param CourseGroup $group The data the user submitted
+     * @param CourseGroup $group
      * @ParamConverter("group", converter="fos_rest.request_body")
      *
-     * @param CourseGroup $id The id of the group to update
-     * @ParamConverter("id", class="IpeerCourseBundle:CourseGroup")
+     * @param CourseGroup $targetGroup
+     * @ParamConverter("group", class="IpeerCourseBundle:CourseGroup")
+     *
+     * @param Course $course
+     * @ParamConverter("course", class="IpeerCourseBundle:Course")
      *
      * @return CourseGroup
      *
-     * @ApiDoc(statusCodes={200="",400="",404=""})
+     * @ApiDoc()
      * @Route("/{id}", name="group_update")
      * @Method("POST")
      */
-    public function updateAction(CourseGroup $group, CourseGroup $id)
+    public function updateAction(CourseGroup $group, CourseGroup $targetGroup, Course $course)
     {
-        // inject the id value from the URL
-        // (ensures update instead of creating a new duplicate)
-        $group->setId($id->getId());
+        if($group->getCourse() === $course) {
+            $group->setId($targetGroup->getId());
 
-        $em = $this->getDoctrine()->getManager();
-        $em->merge($group);
-        $em->flush();
+            $em = $this->getDoctrine()->getManager();
+            $em->merge($group);
+            $em->flush();
 
-        return $group;
+            return $group;
+        } else {
+            throw new NotFoundHttpException();
+        }
     }
 
     /**
      * Deletes a Group entity.
      *
      * @param CourseGroup $group
+     * @ParamConverter("group", class="IpeerCourseBundle:CourseGroup")
+     *
+     * @param Course $course
+     * @ParamConverter("course", class="IpeerCourseBundle:Course")
      *
      * @Rest\View(statusCode=204)
      *
-     * @ApiDoc(statusCodes={204="",404=""})
+     * @ApiDoc()
      * @Route("/{id}", name="group_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(CourseGroup $group)
+    public function deleteAction(CourseGroup $group, Course $course)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($group);
-        $em->flush();
+        if($group->getCourse() === $course) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($group);
+            $em->flush();
+        } else {
+            throw new NotFoundHttpException();
+        }
+    }
+
+    /**
+     * Add a member to the group.
+     *
+     * @param CourseGroup $group
+     * @ParamConverter("group", class="IpeerCourseBundle:CourseGroup")
+     *
+     * @param Course $course
+     * @ParamConverter("course", class="IpeerCourseBundle:Course")
+     *
+     * @param User $user
+     * @ParamConverter("course", class="IpeerCourseBundle:Course")
+     *
+     * @Rest\View(statusCode=204)
+     *
+     * @ApiDoc()
+     * @Route("/{id}/addMember/{user}", name="group_member_add")
+     * @Method("POST")
+     */
+    public function addMemberAction(CourseGroup $group, Course $course, User $user)
+    {
+        $enrollment = $this->getDoctrine()->getRepository('IpeerCourseBundle:Enrollment')->getEnrollmentByUserCourse($user->getId(), $course->getId());
+
+        if($group->getCourse() === $course && $enrollment !== null) {
+            if(!$group->getEnrollments()->contains($enrollment)) {
+                $group->addEnrollment($enrollment);
+                $this->getDoctrine()->getManager()->flush();
+            }
+        } else {
+            throw new NotFoundHttpException();
+        }
+    }
+
+    /**
+     * Removes a member from the group.
+     *
+     * @param CourseGroup $group
+     * @ParamConverter("group", class="IpeerCourseBundle:CourseGroup")
+     *
+     * @param Course $course
+     * @ParamConverter("course", class="IpeerCourseBundle:Course")
+     *
+     * @param User $user
+     * @ParamConverter("course", class="IpeerCourseBundle:Course")
+     *
+     * @Rest\View(statusCode=204)
+     *
+     * @ApiDoc()
+     * @Route("/{id}/removeMember/{user}", name="group_member_delete")
+     * @Method("DELETE")
+     */
+    public function removeMemberAction(CourseGroup $group, Course $course, User $user)
+    {
+        $enrollment = $this->getDoctrine()->getRepository('IpeerCourseBundle:Enrollment')->getEnrollmentByUserCourse($user->getId(), $course->getId());
+
+        if($group->getCourse() === $course
+            && $enrollment !== null
+            && $group->getEnrollments()->contains($enrollment)) {
+            $group->removeEnrollment($enrollment);
+            $this->getDoctrine()->getManager()->flush();
+        } else {
+            throw new NotFoundHttpException();
+        }
     }
 }

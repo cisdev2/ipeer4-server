@@ -3,12 +3,17 @@
 namespace Ipeer\CourseBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * CourseGroup
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Ipeer\CourseBundle\Entity\CourseGroupRepository")
+ *
+ * @ExclusionPolicy("all")
  */
 class CourseGroup
 {
@@ -18,8 +23,21 @@ class CourseGroup
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Expose()
      */
     private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @Assert\NotBlank()
+     *
+     * @Expose()
+     */
+    private $name;
 
     /**
      * @var
@@ -64,6 +82,25 @@ class CourseGroup
     }
 
     /**
+     * @param string $name
+     * @return Course
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
      * Add enrollments
      *
      * @param Enrollment $enrollment
@@ -71,9 +108,12 @@ class CourseGroup
      */
     public function addEnrollment(Enrollment $enrollment)
     {
-        $this->enrollments[] = $enrollment;
-
-        return $this;
+        if($enrollment->isStudent() || $enrollment->isTutor()) {
+            $this->enrollments[] = $enrollment;
+            $enrollment->addCourseGroup($this);
+            return $this;
+        }
+        throw new \InvalidArgumentException();
     }
 
     /**
@@ -84,6 +124,7 @@ class CourseGroup
     public function removeEnrollment(Enrollment $enrollment)
     {
         $this->enrollments->removeElement($enrollment);
+        $enrollment->removeCourseGroup($this);
     }
 
     /**

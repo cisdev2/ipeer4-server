@@ -51,8 +51,7 @@ abstract class SingletonDataFixture extends AbstractFixture implements FixtureIn
     /**
      * @return array
      *
-     * This function should only get called once (singleton via getData)
-     * It should be extended to actually create the data
+     * This function should only get called once per case (singleton via getData)
      */
     abstract protected function makeData();
 

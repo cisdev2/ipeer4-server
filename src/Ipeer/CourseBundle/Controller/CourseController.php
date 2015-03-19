@@ -45,7 +45,7 @@ class CourseController extends Controller
      *
      * @return Course
      *
-     * @ApiDoc(statusCodes={200="",400=""})
+     * @ApiDoc()
      * @Route("", name="course_create")
      * @Method("POST")
      */
@@ -65,7 +65,7 @@ class CourseController extends Controller
      *
      * @return Course
      *
-     * @ApiDoc(statusCodes={200="",404=""})
+     * @ApiDoc()
      * @Route("/{id}", name="course_show")
      * @Method("GET")
      */
@@ -85,7 +85,7 @@ class CourseController extends Controller
      *
      * @return Course
      *
-     * @ApiDoc(statusCodes={200="",400="",404=""})
+     * @ApiDoc()
      * @Route("/{id}", name="course_update")
      * @Method("POST")
      */
@@ -109,7 +109,7 @@ class CourseController extends Controller
      *
      * @Rest\View(statusCode=204)
      *
-     * @ApiDoc(statusCodes={204="",404=""})
+     * @ApiDoc()
      * @Route("/{id}", name="course_delete")
      * @Method("DELETE")
      */

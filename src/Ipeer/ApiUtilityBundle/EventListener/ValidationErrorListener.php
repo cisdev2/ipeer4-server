@@ -11,6 +11,8 @@ class ValidationErrorListener {
     {
         $validationErrors = $event->getRequest()->attributes->get('validationErrors');
 
+
+
         if(null !== $validationErrors && count($validationErrors) > 0) {
             throw new BadRequestHttpException($validationErrors);
         }

@@ -5,12 +5,17 @@ namespace Ipeer\CourseBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Ipeer\UserBundle\Entity\User;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Enrollment
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Ipeer\CourseBundle\Entity\EnrollmentRepository")
+ *
+ * @ExclusionPolicy("all")
  */
 class Enrollment
 {
@@ -44,6 +49,8 @@ class Enrollment
      *
      * @ORM\ManyToOne(targetEntity="Ipeer\UserBundle\Entity\User", inversedBy="enrollments")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *
+     * @Expose()
      */
     private $user;
 
@@ -55,17 +62,24 @@ class Enrollment
     /**
      * @var integer
      * @ORM\Column(name="role_id", type="smallint")
+     *
+     * @Expose()
+     * @Assert\NotBlank()
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 2
+     * )
      */
     private $courseRole;
 
     /**
-     * @var array
+     * Possible course roles
+     *
+     * In the future, this might be abstracted to another class
      */
-    private static $courseRoles = array(
-        0 => "Student",
-        1 => "Tutor",
-        2 => "Instructor",
-    );
+    const STUDENT_ROLE = 0;
+    const TUTOR_ROLE = 1;
+    const INSTRUCTOR_ROLE = 2;
 
     /**
      * Constructor
@@ -162,26 +176,12 @@ class Enrollment
      */
     public function setRoleById($role)
     {
-        if(isset(self::$courseRoles[$role])) {
-            $this->courseRole = $role;
-            return $this;
+        if($role < 0 || $role > 2) { // Somewhat "volatile"
+            throw new \InvalidArgumentException("Invalid role id");
         }
-        throw new \InvalidArgumentException("Invalid role id");
+        $this->courseRole = $role;
+        return $this;
     }
-
-//    Instead of this, use setRoleById(roleStringToId($string))
-//    We don't want multiple setters to throw exceptions
-//
-//    /**
-//     * @param string $role
-//     * @return Enrollment
-//     */
-//    public function setRoleByString($role)
-//    {
-//
-//      ???
-//
-//    }
 
     /**
      * @return integer
@@ -192,33 +192,24 @@ class Enrollment
     }
 
     /**
-     * @param integer $id
-     * @return string
+     * @return bool
      */
-    public static function roleIdToString($id) {
-        if(isset(self::$courseRoles[$id])) {
-            return self::$courseRoles[$id];
-        }
-        throw new \InvalidArgumentException("Invalid role id");
+    public function isStudent() {
+        return $this->courseRole === self::STUDENT_ROLE;
     }
 
     /**
-     * @param string $string
-     * @return integer
+     * @return bool
      */
-    public static function roleStringToId($string) {
-        $id = array_search($string, self::$courseRoles);
-        if($id !== FALSE) {
-            return $id;
-        }
-        throw new \InvalidArgumentException("Invalid role name");
+    public function isInstructor() {
+        return $this->courseRole === self::INSTRUCTOR_ROLE;
     }
 
     /**
-     * @return array
+     * @return bool
      */
-    public static function getRoles() {
-        return self::$courseRoles; // returned by copy, so no need to worry about caller changing this
+    public function isTutor() {
+        return $this->courseRole === self::TUTOR_ROLE;
     }
 
 }
