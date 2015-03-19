@@ -4,12 +4,16 @@ namespace Ipeer\CourseBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * Course
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Ipeer\CourseBundle\Entity\CourseRepository")
+ *
+ * @ExclusionPolicy("all")
  */
 class Course
 {
@@ -19,6 +23,8 @@ class Course
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Expose()
      */
     private $id;
 
@@ -26,6 +32,8 @@ class Course
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @Expose()
      */
     private $name;
 
@@ -33,6 +41,7 @@ class Course
      * @var ArrayCollection|Enrollment[]
      *
      * @ORM\OneToMany(targetEntity="Enrollment", mappedBy="course")
+     *
      */
     private $enrollments;
 
@@ -50,6 +59,16 @@ class Course
     {
         $this->enrollments = new ArrayCollection();
         $this->courseGroups = new ArrayCollection();
+    }
+
+    /**
+     * @param integer $id
+     * @return Course
+     */
+    public function setId($id) {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**

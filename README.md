@@ -25,6 +25,8 @@ To run the server:
 
 Once running, check out the auto-generated api documentation at: [http://localhost:8000/api/doc/](http://localhost:8000/api/doc/). Change the port as needed.
 
+For tinkering, you can use the sandbox at `/api/doc`, a command line HTTP client, or a browser extension ([Postman - REST Client](https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm?hl=en) is quite nice).
+
 Database
 ------------------------
 

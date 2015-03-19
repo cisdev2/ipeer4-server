@@ -1,4 +1,4 @@
-ubc_ipeer_user_user:
-    resource: "@IpeerUserBundle/Controller/UserController.php"
+ipeer_user:
+    resource: "@IpeerUserBundle/Controller/"
     type: annotation
 

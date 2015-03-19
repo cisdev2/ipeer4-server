@@ -47,12 +47,25 @@ class Enrollment
      */
     private $user;
 
-    /**
-     * @var Role
+    /*
+     * Role-related fields
      *
-     * @ORM\ManyToOne(targetEntity="Role")
+     * See role methods later in this class
      */
-    private $role;
+    /**
+     * @var integer
+     * @ORM\Column(name="role_id", type="smallint")
+     */
+    private $courseRole;
+
+    /**
+     * @var array
+     */
+    private static $courseRoles = array(
+        0 => "Student",
+        1 => "Tutor",
+        2 => "Instructor",
+    );
 
     /**
      * Constructor
@@ -136,22 +149,76 @@ class Enrollment
         return $this->courseGroups;
     }
 
+    /*
+     * Role related logic
+     * =======================================================
+     *
+     * Depending on development flow, Role could be turned into its own class
+     */
+
     /**
-     * @param Role $role
+     * @param integer $role
      * @return Enrollment
      */
-    public function setRole(Role $role = null)
+    public function setRoleById($role)
     {
-        $this->role = $role;
+        if(isset(self::$courseRoles[$role])) {
+            $this->courseRole = $role;
+            return $this;
+        }
+        throw new \InvalidArgumentException("Invalid role id");
+    }
 
-        return $this;
+//    Instead of this, use setRoleById(roleStringToId($string))
+//    We don't want multiple setters to throw exceptions
+//
+//    /**
+//     * @param string $role
+//     * @return Enrollment
+//     */
+//    public function setRoleByString($role)
+//    {
+//
+//      ???
+//
+//    }
+
+    /**
+     * @return integer
+     */
+    public function getRoleId()
+    {
+        return $this->courseRole;
     }
 
     /**
-     * @return Role
+     * @param integer $id
+     * @return string
      */
-    public function getRole()
-    {
-        return $this->role;
+    public static function roleIdToString($id) {
+        if(isset(self::$courseRoles[$id])) {
+            return self::$courseRoles[$id];
+        }
+        throw new \InvalidArgumentException("Invalid role id");
     }
+
+    /**
+     * @param string $string
+     * @return integer
+     */
+    public static function roleStringToId($string) {
+        $id = array_search($string, self::$courseRoles);
+        if($id !== FALSE) {
+            return $id;
+        }
+        throw new \InvalidArgumentException("Invalid role name");
+    }
+
+    /**
+     * @return array
+     */
+    public static function getRoles() {
+        return self::$courseRoles; // returned by copy, so no need to worry about caller changing this
+    }
+
 }

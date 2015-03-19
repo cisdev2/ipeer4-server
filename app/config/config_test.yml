@@ -30,5 +30,5 @@ doctrine:
 liip_functional_test:
     # if the caching is on, the load(..) method of a fixture only effectively gets run once
     # so exporting the defined entities directly through a static array will not work
-    # see LoadUserData for a workaround
+    # see SingletonFixture for a workaround
     cache_sqlite_db: true

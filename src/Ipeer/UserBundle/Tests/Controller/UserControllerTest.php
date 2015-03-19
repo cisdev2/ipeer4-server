@@ -24,7 +24,7 @@ class UserControllerTest extends JSONTestCase
     private static $users;
 
     public static function setUpBeforeClass() {
-        self::$users = LoadUserData::getUsers();
+        self::$users = LoadUserData::getData();
     }
 
     /**
@@ -133,7 +133,7 @@ class UserControllerTest extends JSONTestCase
         $route =  $this->getUrl('user_show', array('id' => 0));
         $this->getAndTestJSONResponseFrom("GET", $route, '', 404);
 
-        $route =  $this->getUrl('user_show', array('id' => count(LoadUserData::getUsers()) * 2));
+        $route =  $this->getUrl('user_show', array('id' => count(self::$users) * 2));
         $this->getAndTestJSONResponseFrom("GET", $route, '', 404);
     }
 
@@ -153,9 +153,9 @@ class UserControllerTest extends JSONTestCase
         $route =  $this->getUrl('user');
         $response = $this->getAndTestJSONResponseFrom('GET', $route);
         $data = $response["users"];
-        $this->assertCount(3, $data); //still 3 users; new ones should not have been created
+        $this->assertCount(count(self::$users), $data); //still same amount of users; new ones should not have been created
 
-        for($i = 1; $i <= count(self::$users); $i++) {
+        for($i = 1; $i <= $this->maxLoopLimit; $i++) {
             $this->assertEquals($data[$i-1]["first_name"], "Update".$i);
         }
     }
@@ -188,7 +188,7 @@ class UserControllerTest extends JSONTestCase
         $route =  $this->getUrl('user');
         $response = $this->getAndTestJSONResponseFrom('GET', $route);
         $data = $response["users"];
-        $this->assertCount(3, $data); //still 3 users; new ones should not have been created
+        $this->assertCount(count(self::$users), $data); //still same amount of users; new ones should not have been created
 
         for($i = 1; $i < $this->maxLoopLimit; $i++) {
             $this->assertEquals($data[$i]["first_name"], self::$users[$i]->getFirstName());

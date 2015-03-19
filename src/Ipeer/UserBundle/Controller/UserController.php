@@ -22,8 +22,11 @@ class UserController extends Controller
      * Lists all User entities.
      *
      * @ApiDoc(
-     *  resource=true
+     *  resource=true,
+     *  statusCodes={200=""}
      * )
+     *
+     * @return User[]
      *
      * @Route("", name="user")
      * @Method("GET")
@@ -39,12 +42,11 @@ class UserController extends Controller
      * Creates a new User entity.
      *
      * @param User $user
-     * @return User
-     *
-     * @ApiDoc()
-     *
      * @ParamConverter("user", converter="fos_rest.request_body")
      *
+     * @return User
+     *
+     * @ApiDoc(statusCodes={200="",400=""})
      * @Route("", name="user_create")
      * @Method("POST")
      */
@@ -61,10 +63,10 @@ class UserController extends Controller
      * Finds and displays a User entity.
      *
      * @param User $user
+     *
      * @return User
      *
-     * @ApiDoc()
-     *
+     * @ApiDoc(statusCodes={200="",404=""})
      * @Route("/{id}", name="user_show")
      * @Method("GET")
      */
@@ -77,14 +79,14 @@ class UserController extends Controller
      * Edits an existing User entity.
      *
      * @param User $user The data the user submitted
-     * @param User $id The id of the user to update
-     * @return array
-     *
-     * @ApiDoc()
-     *
      * @ParamConverter("user", converter="fos_rest.request_body")
+     *
+     * @param User $id The entity to be updated
      * @ParamConverter("id", class="IpeerUserBundle:User")
      *
+     * @return array
+     *
+     * @ApiDoc(statusCodes={200="",400="",404=""})
      * @Route("/{id}", name="user_update")
      * @Method("POST")
      */
@@ -105,10 +107,10 @@ class UserController extends Controller
      * Deletes a User entity.
      *
      * @param User $user
+     *
      * @Rest\View(statusCode=204)
      *
-     * @ApiDoc()
-     *
+     * @ApiDoc(statusCodes={204="",404=""})
      * @Route("/{id}", name="user_delete")
      * @Method("DELETE")
      */

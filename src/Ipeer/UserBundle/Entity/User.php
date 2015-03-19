@@ -79,8 +79,6 @@ class User
     }
 
     /**
-     * Get id
-     *
      * @return integer 
      */
     public function getId()
@@ -89,18 +87,17 @@ class User
     }
 
     /**
-     * Set id
-     *
      * @param integer $id
+     * @return User
      */
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
-     * Set firstName
-     *
      * @param string $firstName
      * @return User
      */
@@ -112,8 +109,6 @@ class User
     }
 
     /**
-     * Get firstName
-     *
      * @return string 
      */
     public function getFirstName()
@@ -122,8 +117,6 @@ class User
     }
 
     /**
-     * Set lastName
-     *
      * @param string $lastName
      * @return User
      */
@@ -135,8 +128,6 @@ class User
     }
 
     /**
-     * Get lastName
-     *
      * @return string 
      */
     public function getLastName()
@@ -145,8 +136,6 @@ class User
     }
 
     /**
-     * Set email
-     *
      * @param string $email
      * @return User
      */
@@ -158,8 +147,6 @@ class User
     }
 
     /**
-     * Get email
-     *
      * @return string 
      */
     public function getEmail()
@@ -168,8 +155,6 @@ class User
     }
 
     /**
-     * Add enrollments
-     *
      * @param Enrollment $enrollment
      * @return User
      */
@@ -181,8 +166,6 @@ class User
     }
 
     /**
-     * Remove enrollments
-     *
      * @param Enrollment $enrollment
      */
     public function removeEnrollment(Enrollment $enrollment)
@@ -191,8 +174,6 @@ class User
     }
 
     /**
-     * Get enrollments
-     *
      * @return \Doctrine\Common\Collections\Collection 
      */
     public function getEnrollments()

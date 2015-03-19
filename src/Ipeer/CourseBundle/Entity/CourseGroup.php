@@ -37,6 +37,14 @@ class CourseGroup
     private $course;
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->enrollments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer 
@@ -45,12 +53,14 @@ class CourseGroup
     {
         return $this->id;
     }
+
     /**
-     * Constructor
+     * @param integer $id
+     * @return CourseGroup
      */
-    public function __construct()
-    {
-        $this->enrollments = new \Doctrine\Common\Collections\ArrayCollection();
+    public function setId($id) {
+        $this->id = $id;
+        return $this;
     }
 
     /**
