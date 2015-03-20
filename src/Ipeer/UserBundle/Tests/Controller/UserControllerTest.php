@@ -55,7 +55,7 @@ class UserControllerTest extends JSONTestCase
         $this->loadFixtures($this->standardSampleDate);
 
         $this->assertTrue(count(self::$users) > 0,
-            'LoadUserData::$users not being loaded properly. Will affect other tests');
+            'LoadUserData not being loaded properly. Will affect other tests');
 
         $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('user'));
         $response = $response["users"];
