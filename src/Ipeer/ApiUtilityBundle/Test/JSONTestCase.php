@@ -30,6 +30,10 @@ class JSONTestCase extends WebTestCase
      */
     protected function getAndTestJSONResponseFrom($method, $route, $body = '', $statusCode = 200, $decode = true)
     {
+        if($this->client == null) {
+            $this->client = static::createClient();
+        }
+
         $this->client->request(
             $method,
             $route,
@@ -43,17 +47,12 @@ class JSONTestCase extends WebTestCase
         return $decode ? json_decode($response->getContent(), true) : $response;
     }
 
-    public function setUp()
-    {
-        $this->client = static::createClient();
-    }
-
     private function assertJsonResponse(Response $response, $statusCode = 200)
     {
         $content = $response->getContent();
         if(!empty($content)) {
             $this->assertEquals(
-                $statusCode, $response->getStatusCode()
+                $statusCode, $response->getStatusCode(), "Did not get the expected HTTP status code"
             );
             $this->assertTrue(
                 $response->headers->contains('Content-Type', 'application/json'),

@@ -2,11 +2,11 @@
 
 namespace Ipeer\CourseBundle\DataFixtures\ORM;
 
-use Ipeer\ApiUtilityBundle\DataFixtures\ORM\SingletonDataFixture;
+use Ipeer\ApiUtilityBundle\DataFixtures\ORM\DataLoadingFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Ipeer\CourseBundle\Entity\Enrollment;
 
-class LoadEnrollmentData extends SingletonDataFixture implements OrderedFixtureInterface {
+class LoadEnrollmentData extends DataLoadingFixture implements OrderedFixtureInterface {
 
     /**
      * {@inheritdoc}

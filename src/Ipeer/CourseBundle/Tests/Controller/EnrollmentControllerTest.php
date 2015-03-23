@@ -6,7 +6,68 @@ use Ipeer\ApiUtilityBundle\Test\JSONTestCase;
 
 class EnrollmentControllerTest extends JSONTestCase
 {
-    public function testTemplate() {
-        // coming soon...
+
+    /*
+     * =============================================
+     * Fixtures to load and helper functions
+     * =============================================
+     */
+
+    private $standardSampleData = array(
+        'Ipeer\UserBundle\DataFixtures\ORM\LoadUserData',
+        'Ipeer\CourseBundle\DataFixtures\ORM\LoadCourseData',
+    );
+
+
+    /*
+     * =============================================
+     * Valid Action Tests
+     * ============================================
+     */
+
+    public function testIndexActionEmpty() {
+
+    }
+
+    public function testIndexAction() {
+
+    }
+
+    public function testShowAction() {
+
+    }
+
+    public function testUpdateAction() {
+
+    }
+
+    public function testCreateAction() {
+
+    }
+
+    public function testDeleteAction() {
+
+    }
+
+    /*
+     * =============================================
+     * Invalid Action Tests
+     * ============================================
+     */
+
+    public function testCreateActionInvalid() {
+
+    }
+
+    public function testShowActionInvalid() {
+
+    }
+
+    public function testUpdateActionInvalid() {
+
+    }
+
+    public function testDeleteActionInvalid() {
+
     }
 }

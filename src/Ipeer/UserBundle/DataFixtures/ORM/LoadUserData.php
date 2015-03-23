@@ -3,11 +3,13 @@
 namespace Ipeer\UserBundle\DataFixtures\ORM;
 
 use Ipeer\UserBundle\Entity\User;
-use Ipeer\ApiUtilityBundle\DataFixtures\ORM\SingletonDataFixture;
+use Ipeer\ApiUtilityBundle\DataFixtures\ORM\DataLoadingFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
-class LoadUserData extends SingletonDataFixture implements OrderedFixtureInterface
+class LoadUserData extends DataLoadingFixture implements OrderedFixtureInterface
 {
+
+    const NUMBER_OF_USERS = 37;
 
     /**
      * {@inheritdoc}
@@ -15,7 +17,8 @@ class LoadUserData extends SingletonDataFixture implements OrderedFixtureInterfa
     protected function makeData() {
 
         $usersData = array(
-            array("Sudo1", "SuperAdmin01", "sudo01@ipeer.ubc"),
+
+            array("Sudo1", "SuperAdmin01", "sudo01@ipeer.ubc"), // id = 1; index = 0
             array("Sudo2", "SuperAdmin02", "sudo02@ipeer.ubc"),
 
             array("Science", "Admin01", "scienceadmin@ipeer.ubc"),
@@ -23,7 +26,7 @@ class LoadUserData extends SingletonDataFixture implements OrderedFixtureInterfa
             array("Arts", "Admin03", "artsadmin@ipeer.ubc"),
             array("Business", "Admin04", "businessadmin@ipeer.ubc"),
 
-            array("APSC", "Instructor01", "apscInstr@ipeer.ubc"),
+            array("APSC", "Instructor01", "apscInstr@ipeer.ubc"), // id = 7; index = 6
             array("MECH", "Instructor02", "mechInstr@ipeer.ubc"),
             array("CPSC", "Instructor04", "cpscInstr@ipeer.ubc"),
             array("MATH", "Instructor05", "mathInstr@ipeer.ubc"),
@@ -31,12 +34,12 @@ class LoadUserData extends SingletonDataFixture implements OrderedFixtureInterfa
             array("ARTS", "Instructor08", "artsInstr@ipeer.ubc"),
             array("COMM", "Instructor10", "commInstr@ipeer.ubc"),
 
-            array("Tutour", "Tutor01", "tutor01@ipeer.ubc"),
+            array("Tutour", "Tutor01", "tutor01@ipeer.ubc"), // id = 14; index = 13
             array("Tuteur", "Tutor02", "tutor02@ipeer.ubc"),
             array("Tutoor", "Tutor03", "tutor03@ipeer.ubc"),
             array("Tutoar", "Tutor04", "tutor04@ipeer.ubc"),
 
-            array("Kirk", "Student01", "student01@ipeer.ubc"),
+            array("Kirk", "Student01", "student01@ipeer.ubc"), // id = 18; index = 17
             array("Spock", "Student02", "student02@ipeer.ubc"),
             array("McCoy", "Student03", "student03@ipeer.ubc"),
             array("Scott", "Student04", "student04@ipeer.ubc"),

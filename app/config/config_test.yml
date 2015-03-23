@@ -4,10 +4,6 @@ imports:
 
 framework:
     test: ~
-    session:
-        storage_id: session.storage.filesystem
-    #profiler:
-    #   enabled: false # false in regular Symfony REST Edition
 
 web_profiler:
     toolbar: false
@@ -28,7 +24,4 @@ doctrine:
 
 # Speed up local tests
 liip_functional_test:
-    # if the caching is on, the load(..) method of a fixture only effectively gets run once
-    # so exporting the defined entities directly through a static array will not work
-    # see SingletonFixture for a workaround
     cache_sqlite_db: true
