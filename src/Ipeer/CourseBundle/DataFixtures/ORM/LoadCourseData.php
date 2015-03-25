@@ -8,7 +8,7 @@ use Ipeer\CourseBundle\Entity\Course;
 
 class LoadCourseData extends DataLoadingFixture implements OrderedFixtureInterface {
 
-    const NUMBER_OF_COURSES = 7;
+    const NUMBER_OF_COURSES = 8;
 
     /**
      * {@inheritdoc}
@@ -25,6 +25,7 @@ class LoadCourseData extends DataLoadingFixture implements OrderedFixtureInterfa
             array("ENGL112"), // id = 5, index = 4
             array("ARTS001"),
             array("COMM335"), // id = 7, index = 6
+            array("TEST000") // empty course
         );
 
         $courses = array();

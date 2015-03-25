@@ -23,7 +23,6 @@ class UserController extends Controller
      *
      * @ApiDoc(
      *  resource=true,
-     *  statusCodes={200=""}
      * )
      *
      * @return User[]
@@ -46,7 +45,7 @@ class UserController extends Controller
      *
      * @return User
      *
-     * @ApiDoc(statusCodes={200="",400=""})
+     * @ApiDoc()
      * @Route("", name="user_create")
      * @Method("POST")
      */
@@ -66,7 +65,7 @@ class UserController extends Controller
      *
      * @return User
      *
-     * @ApiDoc(statusCodes={200="",404=""})
+     * @ApiDoc()
      * @Route("/{id}", name="user_show")
      * @Method("GET")
      */
@@ -86,7 +85,7 @@ class UserController extends Controller
      *
      * @return array
      *
-     * @ApiDoc(statusCodes={200="",400="",404=""})
+     * @ApiDoc()
      * @Route("/{id}", name="user_update")
      * @Method("POST")
      */
@@ -110,7 +109,7 @@ class UserController extends Controller
      *
      * @Rest\View(statusCode=204)
      *
-     * @ApiDoc(statusCodes={204="",404=""})
+     * @ApiDoc()
      * @Route("/{id}", name="user_delete")
      * @Method("DELETE")
      */

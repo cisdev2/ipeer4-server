@@ -52,7 +52,7 @@ class JSONTestCase extends WebTestCase
         $content = $response->getContent();
         if(!empty($content)) {
             $this->assertEquals(
-                $statusCode, $response->getStatusCode(), "Did not get the expected HTTP status code"
+                $statusCode, $response->getStatusCode(), "\nDid not get the expected HTTP status code. Got this content: \n\n\n\n\n" . $content . ".....\n\n\n\n\n"
             );
             $this->assertTrue(
                 $response->headers->contains('Content-Type', 'application/json'),

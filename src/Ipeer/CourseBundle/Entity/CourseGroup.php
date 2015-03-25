@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * CourseGroup
@@ -109,11 +110,11 @@ class CourseGroup
     public function addEnrollment(Enrollment $enrollment)
     {
         if($enrollment->isStudent() || $enrollment->isTutor()) {
-            $this->enrollments[] = $enrollment;
+            $this->getEnrollments()->add($enrollment);
             $enrollment->addCourseGroup($this);
             return $this;
         }
-        throw new \InvalidArgumentException();
+        throw new BadRequestHttpException();
     }
 
     /**
@@ -123,7 +124,7 @@ class CourseGroup
      */
     public function removeEnrollment(Enrollment $enrollment)
     {
-        $this->enrollments->removeElement($enrollment);
+        $this->getEnrollments()->removeElement($enrollment);
         $enrollment->removeCourseGroup($this);
     }
 
@@ -134,6 +135,10 @@ class CourseGroup
      */
     public function getEnrollments()
     {
+        if(null === $this->enrollments) {
+            // needed if object is deserialized and constructor get bypassed
+            $this->enrollments = new \Doctrine\Common\Collections\ArrayCollection();
+        }
         return $this->enrollments;
     }
 
@@ -158,5 +163,14 @@ class CourseGroup
     public function getCourse()
     {
         return $this->course;
+    }
+
+    /**
+     * Used in (JSON) serialization
+     *
+     * @return array
+     */
+    public function getInfoandMembers() {
+        return array('group' => $this, 'members' => $this->getEnrollments());
     }
 }

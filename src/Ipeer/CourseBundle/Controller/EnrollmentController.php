@@ -61,14 +61,18 @@ class EnrollmentController extends Controller
      */
     public function updateAction(Course $course, User $user, Enrollment $enrollment)
     {
-        echo (string) $this->get('validator')->validate($enrollment) . "-=-";
-
         $existingEnrollment = $this->getDoctrine()->getRepository('IpeerCourseBundle:Enrollment')->getEnrollmentByUserCourse($user->getId(), $course->getId());
 
         if(null === $existingEnrollment) {
             $enrollment->setCourse($course);
             $enrollment->setUser($user);
         } else {
+            // if being upgraded to a no-group-possible role, remove the user from the group
+            if($existingEnrollment->getRoleId() !== Enrollment::INSTRUCTOR_ROLE && $enrollment->getRoleId() === Enrollment::INSTRUCTOR_ROLE) {
+                foreach($existingEnrollment->getCourseGroups() as $group) {
+                    $group->removeEnrollment($existingEnrollment);
+                }
+            }
             $enrollment = $existingEnrollment->setRoleById($enrollment->getRoleId());
         }
 

@@ -23,8 +23,7 @@ class CourseController extends Controller
      * Lists all Course entities.
      *
      * @ApiDoc(
-     *  resource=true,
-     *  statusCodes={200=""}
+     *  resource=true
      * )
      *
      * @Route("", name="course")

@@ -142,7 +142,7 @@ class Enrollment
      */
     public function addCourseGroup(CourseGroup $courseGroup)
     {
-        $this->courseGroups[] = $courseGroup;
+        $this->getCourseGroups()->add($courseGroup);
 
         return $this;
     }
@@ -152,14 +152,18 @@ class Enrollment
      */
     public function removeCourseGroup(CourseGroup $courseGroup)
     {
-        $this->courseGroups->removeElement($courseGroup);
+        $this->getCourseGroups()->removeElement($courseGroup);
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getCourseGroups()
     {
+        if(null === $this->courseGroups) {
+            // needed if object is deserialized and constructor get bypassed
+            $this->courseGroups = new \Doctrine\Common\Collections\ArrayCollection();
+        }
         return $this->courseGroups;
     }
 

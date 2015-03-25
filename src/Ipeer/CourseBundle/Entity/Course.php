@@ -107,7 +107,7 @@ class Course
      */
     public function addEnrollment(Enrollment $enrollment)
     {
-        $this->enrollments[] = $enrollment;
+        $this->getEnrollments()->add($enrollment);
 
         return $this;
     }
@@ -117,7 +117,7 @@ class Course
      */
     public function removeEnrollment(Enrollment $enrollment)
     {
-        $this->enrollments->removeElement($enrollment);
+        $this->getEnrollments()->removeElement($enrollment);
     }
 
     /**
@@ -125,6 +125,10 @@ class Course
      */
     public function getEnrollments()
     {
+        if(null === $this->enrollments) {
+            // needed if object is deserialized and constructor get bypassed
+            $this->enrollments = new ArrayCollection();
+        }
         return $this->enrollments;
     }
 
@@ -134,17 +138,18 @@ class Course
      */
     public function addCourseGroup(CourseGroup $courseGroup)
     {
-        $this->courseGroups[] = $courseGroup;
+        $this->getCourseGroups()->add($courseGroup);
+        $courseGroup->setCourse($this);
 
         return $this;
     }
 
     /**
-     * @param CourseGroup $courseGroups
+     * @param CourseGroup $courseGroup
      */
-    public function removeCourseGroup(CourseGroup $courseGroups)
+    public function removeCourseGroup(CourseGroup $courseGroup)
     {
-        $this->courseGroups->removeElement($courseGroups);
+        $this->getCourseGroups()->removeElement($courseGroup);
     }
 
     /**
@@ -152,6 +157,11 @@ class Course
      */
     public function getCourseGroups()
     {
+        if(null === $this->courseGroups) {
+            // needed if object is deserialized and constructor get bypassed
+            $this->courseGroups = new ArrayCollection();
+        }
+
         return $this->courseGroups;
     }
 }

@@ -76,6 +76,7 @@ fos_rest:
             'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
             'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
             'Symfony\Component\HttpKernel\Exception\NotFoundHttpException': 404
+            'Symfony\Component\HttpKernel\Exception\BadRequestHttpException': 400
         messages:
             'Symfony\Component\Routing\Exception\ResourceNotFoundException': true
     allowed_methods_listener: true

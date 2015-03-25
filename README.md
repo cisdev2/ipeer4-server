@@ -14,6 +14,11 @@ iPeer v4 Server
 [![Code Climate](https://codeclimate.com/github/cisdev2/ipeer4-server/badges/gpa.svg)](https://codeclimate.com/github/cisdev2/ipeer4-server)
 [![Test Coverage](https://codeclimate.com/github/cisdev2/ipeer4-server/badges/coverage.svg)](https://codeclimate.com/github/cisdev2/ipeer4-server)
 
+Documentation
+------------------------
+
+See the [/doc](/doc) directory for more documentation and development notes.
+
 Basics
 ------------------------
 You will need composer: https://getcomposer.org/
@@ -47,6 +52,9 @@ To reset the database, run:
     php app/console doctrine:database:drop --force
     php app/console doctrine:database:create
     php app/console doctrine:schema:update --force
+
+To reset the database and load the fixtures, use the `reset` shell script:
+    ./app/reset
 
 Tests
 ------------------------

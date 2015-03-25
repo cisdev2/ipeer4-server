@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# make sure the script is running relative to /app/
+cd ${0%/*}
+
+# resets the database
+php console doctrine:database:drop --force && php console doctrine:database:create && php console doctrine:schema:update --force && php console doctrine:fixtures:load --append

@@ -2,6 +2,7 @@
 
 namespace Ipeer\CourseBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -58,12 +59,12 @@ class CourseGroupController extends Controller
      */
     public function createAction(Course $course, CourseGroup $group)
     {
-        $group->setCourse($course);
+        $course->addCourseGroup($group);
         $em = $this->getDoctrine()->getManager();
         $em->persist($group);
         $em->flush();
 
-        return $group;
+        return $group->getInfoandMembers();
     }
 
     /**
@@ -83,8 +84,8 @@ class CourseGroupController extends Controller
      */
     public function showAction(CourseGroup $group, Course $course)
     {
-        if($group->getCourse() === $course) {
-            return array("group" => $group, "members" => $group->getEnrollments());
+        if($group->getCourse() == $course) {
+            return $group->getInfoandMembers();
         } else {
             throw new NotFoundHttpException();
         }
@@ -93,14 +94,14 @@ class CourseGroupController extends Controller
     /**
      * Edits an existing Group entity.
      *
-     * @param CourseGroup $group
-     * @ParamConverter("group", converter="fos_rest.request_body")
-     *
      * @param CourseGroup $targetGroup
-     * @ParamConverter("group", class="IpeerCourseBundle:CourseGroup")
+     * @ParamConverter("targetGroup", class="IpeerCourseBundle:CourseGroup")
      *
      * @param Course $course
      * @ParamConverter("course", class="IpeerCourseBundle:Course")
+     *
+     * @param CourseGroup $group
+     * @ParamConverter("group", converter="fos_rest.request_body")
      *
      * @return CourseGroup
      *
@@ -108,16 +109,18 @@ class CourseGroupController extends Controller
      * @Route("/{id}", name="group_update")
      * @Method("POST")
      */
-    public function updateAction(CourseGroup $group, CourseGroup $targetGroup, Course $course)
+    public function updateAction(CourseGroup $targetGroup, Course $course, CourseGroup $group)
     {
-        if($group->getCourse() === $course) {
-            $group->setId($targetGroup->getId());
+        if($targetGroup->getCourse() == $course) {
+            // we need to modify targetGroup directly to avoid losing group data
+            // so we go field-by-field:
+            // - name
+            // ... other fields go here if added
+            $targetGroup->setName($group->getName());
 
-            $em = $this->getDoctrine()->getManager();
-            $em->merge($group);
-            $em->flush();
+            $this->getDoctrine()->getManager()->flush();
 
-            return $group;
+            return $targetGroup->getInfoandMembers();
         } else {
             throw new NotFoundHttpException();
         }
@@ -140,7 +143,7 @@ class CourseGroupController extends Controller
      */
     public function deleteAction(CourseGroup $group, Course $course)
     {
-        if($group->getCourse() === $course) {
+        if($group->getCourse() == $course) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($group);
             $em->flush();
@@ -152,14 +155,15 @@ class CourseGroupController extends Controller
     /**
      * Add a member to the group.
      *
-     * @param CourseGroup $group
-     * @ParamConverter("group", class="IpeerCourseBundle:CourseGroup")
      *
      * @param Course $course
      * @ParamConverter("course", class="IpeerCourseBundle:Course")
      *
+     * @param CourseGroup $group
+     * @ParamConverter("group", class="IpeerCourseBundle:CourseGroup")
+     *
      * @param User $user
-     * @ParamConverter("course", class="IpeerCourseBundle:Course")
+     * @ParamConverter("user", class="IpeerUserBundle:User")
      *
      * @Rest\View(statusCode=204)
      *
@@ -167,11 +171,14 @@ class CourseGroupController extends Controller
      * @Route("/{id}/addMember/{user}", name="group_member_add")
      * @Method("POST")
      */
-    public function addMemberAction(CourseGroup $group, Course $course, User $user)
+    public function addMemberAction(Course $course, CourseGroup $group,  User $user)
     {
         $enrollment = $this->getDoctrine()->getRepository('IpeerCourseBundle:Enrollment')->getEnrollmentByUserCourse($user->getId(), $course->getId());
 
-        if($group->getCourse() === $course && $enrollment !== null) {
+        if($group->getCourse() == $course) {
+            if($enrollment === null) {
+                throw new BadRequestHttpException();
+            }
             if(!$group->getEnrollments()->contains($enrollment)) {
                 $group->addEnrollment($enrollment);
                 $this->getDoctrine()->getManager()->flush();
