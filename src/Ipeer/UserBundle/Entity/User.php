@@ -7,6 +7,8 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ipeer\CourseBundle\Entity\Enrollment;
+use Doctrine\Common\Collections\ArrayCollection;
+use Ipeer\CourseBundle\Entity\Faculty;
 
 /**
  * User
@@ -64,18 +66,29 @@ class User
     private $email;
 
     /**
-     * @var
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Ipeer\CourseBundle\Entity\Enrollment", mappedBy="user")
      */
     private $enrollments;
+
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Ipeer\CourseBundle\Entity\Faculty", inversedBy="users")
+     * @ORM\JoinTable(name="users_faculties")
+     */
+    private $faculties;
+
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->enrollments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->enrollments = new ArrayCollection();
+        $this->faculties = new ArrayCollection();
     }
 
     /**
@@ -160,17 +173,21 @@ class User
      */
     public function addEnrollment(Enrollment $enrollment)
     {
-        $this->enrollments[] = $enrollment;
+        $this->getEnrollments()->add($enrollment);
 
         return $this;
     }
 
     /**
      * @param Enrollment $enrollment
+     *
+     * @return User
      */
     public function removeEnrollment(Enrollment $enrollment)
     {
-        $this->enrollments->removeElement($enrollment);
+        $this->getEnrollments()->removeElement($enrollment);
+
+        return $this;
     }
 
     /**
@@ -179,5 +196,40 @@ class User
     public function getEnrollments()
     {
         return $this->enrollments;
+    }
+
+    /**
+     * @param Faculty $enrollment
+     * @return User
+     */
+    public function addFaculty(Faculty $faculty)
+    {
+        $this->getFaculties()->add($faculty);
+
+        return $this;
+    }
+
+    /**
+     * @param Faculty $faculty
+     *
+     * @return User
+     */
+    public function removeFaculty(Faculty $faculty)
+    {
+        $this->getFaculties()->removeElement($faculty);
+
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFaculties()
+    {
+        if(null === $this->faculties) {
+            // needed if object is deserialized and constructor gets bypassed
+            $this->faculties = new ArrayCollection();
+        }
+        return $this->faculties;
     }
 }

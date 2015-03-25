@@ -56,6 +56,15 @@ class Course
     private $courseGroups;
 
     /**
+     * @var Department
+     *
+     * @ORM\ManyToOne(targetEntity="Department", inversedBy="courses")
+     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+     *
+     **/
+    private $department;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -163,5 +172,22 @@ class Course
         }
 
         return $this->courseGroups;
+    }
+
+    /**
+     * @param Department $department
+     * @return Course
+     */
+    public function setDepartment(Department $department) {
+        $this->department = $department;
+
+        return $this;
+    }
+
+    /**
+     * @return Course
+     */
+    public function getDepartment() {
+        return $this->department;
     }
 }
