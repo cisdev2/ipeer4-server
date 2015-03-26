@@ -2,26 +2,13 @@
 
 namespace Ipeer\CourseBundle\Tests\Controller;
 
-use Ipeer\ApiUtilityBundle\Test\JSONTestCase;
+use Ipeer\ApiUtilityBundle\Test\IpeerTestCase;
 use Ipeer\CourseBundle\DataFixtures\ORM\LoadCourseData;
 use Ipeer\CourseBundle\Entity\Enrollment;
 use Ipeer\UserBundle\DataFixtures\ORM\LoadUserData;
 
-class EnrollmentControllerTest extends JSONTestCase
+class EnrollmentControllerTest extends IpeerTestCase
 {
-
-    /*
-     * =============================================
-     * Fixtures to load and helper functions
-     * =============================================
-     */
-
-    private $standardSampleData = array(
-        'Ipeer\UserBundle\DataFixtures\ORM\LoadUserData',
-        'Ipeer\CourseBundle\DataFixtures\ORM\LoadCourseData',
-        'Ipeer\CourseBundle\DataFixtures\ORM\LoadEnrollmentData',
-        'Ipeer\CourseBundle\DataFixtures\ORM\LoadGroupData',
-    );
 
     /**
      * @param array $data
@@ -29,7 +16,8 @@ class EnrollmentControllerTest extends JSONTestCase
      * @param integer $numTutors
      * @param integer $numStudents
      */
-    private function verifyEnrollmentCounts($data, $numInstructors, $numTutors, $numStudents) {
+    private function verifyEnrollmentCounts($data, $numInstructors, $numTutors, $numStudents)
+    {
         $countInstructors = 0;
         $countStudents = 0;
         $countTutors = 0;
@@ -62,8 +50,9 @@ class EnrollmentControllerTest extends JSONTestCase
      * ============================================
      */
 
-    public function testIndexActionEmpty() {
-        $this->loadFixtures($this->standardSampleData);
+    public function testIndexActionEmpty()
+    {
+        $this->loadFixtures($this->IpeerFixtures);
         $response = $this->getAndTestJSONResponseFrom("GET",
             $this->getUrl('enrollment', array('course' => 8)));
         $this->verifyEnrollmentCounts($response["enrollments"], 0,0,0);
@@ -72,7 +61,8 @@ class EnrollmentControllerTest extends JSONTestCase
     /**
      * @depends testIndexActionEmpty
      */
-    public function testIndexAction() {
+    public function testIndexAction()
+    {
         // apsc 201
         $response = $this->getAndTestJSONResponseFrom("GET",
             $this->getUrl('enrollment', array('course' => 1)));
@@ -92,7 +82,8 @@ class EnrollmentControllerTest extends JSONTestCase
     /**
      * @depends testIndexAction
      */
-    public function testUpdateAction() {
+    public function testUpdateAction()
+    {
         // student to tutor (? is this needed)
         // should remain in groups
         // apsc 201 (1), group01 (1), student01 (18)
@@ -199,7 +190,8 @@ class EnrollmentControllerTest extends JSONTestCase
     /**
      * @depends testUpdateAction
      */
-    public function testCreateAction() {
+    public function testCreateAction()
+    {
         // create student
         // empty course (id 8)
 
@@ -232,7 +224,8 @@ class EnrollmentControllerTest extends JSONTestCase
     /**
      * @depends testCreateAction
      */
-    public function testDeleteAction() {
+    public function testDeleteAction()
+    {
         // delete student
         // empty course (id 8)
 
@@ -268,8 +261,9 @@ class EnrollmentControllerTest extends JSONTestCase
      * ============================================
      */
 
-    public function testCreateActionInvalid() {
-        $this->loadFixtures($this->standardSampleData);
+    public function testCreateActionInvalid()
+    {
+        $this->loadFixtures($this->IpeerFixtures);
 
         // non existent course
         $this->getAndTestJSONResponseFrom("POST",
@@ -296,7 +290,8 @@ class EnrollmentControllerTest extends JSONTestCase
     /**
      * @depends testCreateActionInvalid
      */
-    public function testShowActionInvalid() {
+    public function testShowActionInvalid()
+    {
         $this->getAndTestJSONResponseFrom("GET",
             $this->getUrl('enrollment', array('course' => LoadCourseData::NUMBER_OF_COURSES * 2)),
             '', 404);
@@ -305,7 +300,8 @@ class EnrollmentControllerTest extends JSONTestCase
     /**
      * @depends testShowActionInvalid
      */
-    public function testDeleteActionInvalid() {
+    public function testDeleteActionInvalid()
+    {
         // non existent course
         $this->getAndTestJSONResponseFrom("DELETE",
             $this->getUrl('enrollment_update', array('course' => LoadCourseData::NUMBER_OF_COURSES * 2, 'user' => 5)),

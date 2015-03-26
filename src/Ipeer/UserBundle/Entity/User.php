@@ -78,6 +78,8 @@ class User
      *
      * @ORM\ManyToMany(targetEntity="Ipeer\CourseBundle\Entity\Faculty", inversedBy="users")
      * @ORM\JoinTable(name="users_faculties")
+     *
+     * @Expose()
      */
     private $faculties;
 

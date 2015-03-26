@@ -4,17 +4,22 @@ namespace Ipeer\CourseBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * Department
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Ipeer\CourseBundle\Entity\DepartmentRepository")
+ * @ExclusionPolicy("all")
  */
 class Department
 {
     /**
      * @var integer
+     *
+     * @Expose
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -26,6 +31,8 @@ class Department
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @Expose()
      */
     private $name;
 
@@ -101,7 +108,7 @@ class Department
      */
     public function setFaculty(Faculty $faculty) {
         $this->faculty = $faculty;
-
+        $faculty->addDepartment($this);
         return $this;
     }
 

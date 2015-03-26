@@ -2,23 +2,11 @@
 
 namespace Ipeer\UserBundle\Tests\Controller;
 
-use Ipeer\ApiUtilityBundle\Test\JSONTestCase;
+use Ipeer\ApiUtilityBundle\Test\IpeerTestCase;
 use Ipeer\UserBundle\DataFixtures\ORM\LoadUserData;
-use Ipeer\UserBundle\Entity\User;
 
-class UserControllerTest extends JSONTestCase
+class UserControllerTest extends IpeerTestCase
 {
-
-    /*
-     * =============================================
-     * Fixtures to load and helper functions
-     * =============================================
-     */
-
-    private $standardSampleData = array(
-        'Ipeer\UserBundle\DataFixtures\ORM\LoadUserData',
-    );
-
     /**
      * @param $userExpected
      * @param $userActual
@@ -36,7 +24,8 @@ class UserControllerTest extends JSONTestCase
      * ============================================
      */
 
-    public function testIndexActionEmpty() {
+    public function testIndexActionEmpty()
+    {
         $this->loadFixtures(array());
         $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('user'));
         // When no users present, get an empty array
@@ -46,8 +35,9 @@ class UserControllerTest extends JSONTestCase
     /**
      * @depends testIndexActionEmpty
      */
-    public function testIndexAction() {
-        $this->loadFixtures($this->standardSampleData);
+    public function testIndexAction()
+    {
+        $this->loadFixtures($this->IpeerFixtures);
 
         $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('user'));
         $response = $response["users"];
@@ -63,7 +53,8 @@ class UserControllerTest extends JSONTestCase
     /**
      * @depends testIndexAction
      */
-    public function testShowAction() {
+    public function testShowAction()
+    {
         $this->assertUserEquals(array("Sudo1", "SuperAdmin01", "sudo01@ipeer.ubc"),
             $this->getAndTestJSONResponseFrom("GET", $this->getUrl('user_show', array('id' => 1))));
         $this->assertUserEquals(array("APSC", "Instructor01", "apscInstr@ipeer.ubc") ,
@@ -77,7 +68,8 @@ class UserControllerTest extends JSONTestCase
     /**
      * @depends testShowAction
      */
-    public function testUpdateAction() {
+    public function testUpdateAction()
+    {
         $route =  $this->getUrl('user_update', array('id' => 1));
         $this->getAndTestJSONResponseFrom('POST', $route,
             '{"id": 1, "first_name": "Update1", "last_name": "Last1", "email": "testcreateaction1@ipeer.ubc"}');
@@ -101,7 +93,8 @@ class UserControllerTest extends JSONTestCase
     /**
      * @depends testUpdateAction
      */
-    public function testCreateAction() {
+    public function testCreateAction()
+    {
         $route =  $this->getUrl('user');
 
         $data = $this->getAndTestJSONResponseFrom("POST", $route,
@@ -122,8 +115,9 @@ class UserControllerTest extends JSONTestCase
     /*
      * No dependency
      */
-    public function testDeleteAction() {
-        $this->loadFixtures($this->standardSampleData);
+    public function testDeleteAction()
+    {
+        $this->loadFixtures($this->IpeerFixtures);
 
         $route =  $this->getUrl('user_delete', array('id' => 1));
         $this->getAndTestJSONResponseFrom('DELETE', $route, '', 204);
@@ -148,8 +142,9 @@ class UserControllerTest extends JSONTestCase
      * =============================================
      */
 
-    public function testShowActionInvalid() {
-        $this->loadFixtures($this->standardSampleData);
+    public function testShowActionInvalid()
+    {
+        $this->loadFixtures($this->IpeerFixtures);
 
         $route =  $this->getUrl('user_show', array('id' => 0));
         $this->getAndTestJSONResponseFrom("GET", $route, '', 404);
@@ -161,7 +156,8 @@ class UserControllerTest extends JSONTestCase
     /**
      * @depends testShowActionInvalid
      */
-    public function testUpdateActionInvalid() {
+    public function testUpdateActionInvalid()
+    {
         // various missing data examples
         $route =  $this->getUrl('user_update', array('id' => 1));
         $this->getAndTestJSONResponseFrom('POST', $route,
@@ -200,7 +196,8 @@ class UserControllerTest extends JSONTestCase
     /**
      * @depends testUpdateActionInvalid
      */
-    public function testCreateActionInvalid() {
+    public function testCreateActionInvalid()
+    {
         $route =  $this->getUrl('user');
 
         // various corruptions of data (blank, empty object, bad email, missing various fields)
@@ -229,7 +226,8 @@ class UserControllerTest extends JSONTestCase
      * @depends testCreateActionInvalid
      */
 
-    public function testDeleteActionInvalid() {
+    public function testDeleteActionInvalid()
+    {
         // users that don't exist in the first place should 404
         $route =  $this->getUrl('user_delete', array('id' => LoadUserData::NUMBER_OF_USERS * 2 ));
         $this->getAndTestJSONResponseFrom('DELETE', $route, '', 404);

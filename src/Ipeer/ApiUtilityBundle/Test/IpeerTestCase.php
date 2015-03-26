@@ -6,7 +6,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Client;
 use Symfony\Component\HttpFoundation\Response;
 
-class JSONTestCase extends WebTestCase
+class IpeerTestCase extends WebTestCase
 {
 
     /*
@@ -14,6 +14,15 @@ class JSONTestCase extends WebTestCase
     * Helper Methods
     * =============================================
     */
+
+    protected $IpeerFixtures = array(
+        'Ipeer\UserBundle\DataFixtures\ORM\LoadUserData',
+        'Ipeer\CourseBundle\DataFixtures\ORM\LoadCourseData',
+        'Ipeer\CourseBundle\DataFixtures\ORM\LoadEnrollmentData',
+        'Ipeer\CourseBundle\DataFixtures\ORM\LoadGroupData',
+        'Ipeer\CourseBundle\DataFixtures\ORM\LoadDepartmentData',
+        'Ipeer\CourseBundle\DataFixtures\ORM\LoadFacultyData',
+    );
 
     /**
      * @var Client

@@ -5,12 +5,16 @@ namespace Ipeer\CourseBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Ipeer\UserBundle\Entity\User;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * Faculty
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Ipeer\CourseBundle\Entity\FacultyRepository")
+ *
+ * @ExclusionPolicy("all")
  */
 class Faculty
 {
@@ -20,6 +24,8 @@ class Faculty
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Expose
      */
     private $id;
 
@@ -27,6 +33,8 @@ class Faculty
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @Expose
      */
     private $name;
 
@@ -166,5 +174,9 @@ class Faculty
             $this->users = new ArrayCollection();
         }
         return $this->users;
+    }
+
+    public function getInfoAndDepartments() {
+        return array($this,$this->getDepartments());
     }
 }
