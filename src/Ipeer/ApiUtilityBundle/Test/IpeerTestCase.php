@@ -30,6 +30,14 @@ class IpeerTestCase extends WebTestCase
     private $client;
 
     /**
+     * Runs before each test class/file
+     */
+    public static function setUpBeforeClass()
+    {
+        fwrite(STDOUT, "\n\nStarted " . get_called_class() . "\n");
+    }
+
+    /**
      * @param string $method The HTTP method for the request
      * @param string $route The URL/route to access
      * @param string $body Body of request
@@ -61,7 +69,7 @@ class IpeerTestCase extends WebTestCase
         $content = $response->getContent();
         if(!empty($content)) {
             $this->assertEquals(
-                $statusCode, $response->getStatusCode(), "\nDid not get the expected HTTP status code. Got this content: \n\n\n\n\n" . $content . ".....\n\n\n\n\n"
+                $statusCode, $response->getStatusCode(), "\nDid not get the expected HTTP status code. Got this content: \n\n\n" . $content . ".....\n\n\n"
             );
             $this->assertTrue(
                 $response->headers->contains('Content-Type', 'application/json'),

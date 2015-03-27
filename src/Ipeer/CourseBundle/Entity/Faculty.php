@@ -8,6 +8,7 @@ use Ipeer\UserBundle\Entity\User;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Faculty
@@ -34,6 +35,8 @@ class Faculty
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @Assert\NotNull()
      *
      * @Expose
      */
@@ -178,9 +181,5 @@ class Faculty
             $this->users = new ArrayCollection();
         }
         return $this->users;
-    }
-
-    public function getInfoAndDepartments() {
-        return array($this,$this->getDepartments());
     }
 }

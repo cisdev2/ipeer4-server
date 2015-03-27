@@ -55,7 +55,7 @@ class FacultyController extends Controller
         $em->persist($faculty);
         $em->flush();
 
-        return $faculty->getInfoAndDepartments();
+        return $faculty;
     }
 
     /**
@@ -71,17 +71,17 @@ class FacultyController extends Controller
      */
     public function showAction(Faculty $faculty)
     {
-        return $faculty->getInfoAndDepartments();
+        return $faculty;
     }
 
     /**
      * Edits an existing Faculty entity.
      *
      * @param Faculty $faculty
-     * @ParamConverter("faculty", class="IpeerCourseBundle:Facultyr")
+     * @ParamConverter("faculty", class="IpeerCourseBundle:Faculty")
      *
      * @param Faculty $inputFaculty
-     * @ParamConverter("$inputFaculty", converter="fos_rest.request_body")
+     * @ParamConverter("inputFaculty", converter="fos_rest.request_body")
      *
      * @return Faculty
      *
@@ -94,7 +94,7 @@ class FacultyController extends Controller
         // go field by field
         $faculty->setName($inputFaculty->getName());
         $this->getDoctrine()->getManager()->flush();
-        return $faculty->getInfoAndDepartments();
+        return $faculty;
     }
 
     /**

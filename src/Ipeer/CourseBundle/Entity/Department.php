@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Department
@@ -31,6 +32,8 @@ class Department
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @Assert\NotNull()
      *
      * @Expose()
      */
@@ -108,7 +111,6 @@ class Department
      */
     public function setFaculty(Faculty $faculty) {
         $this->faculty = $faculty;
-        $faculty->addDepartment($this);
         return $this;
     }
 
