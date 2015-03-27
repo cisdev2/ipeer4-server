@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Ipeer\UserBundle\Entity\User;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
+use FOS\RestBundle\Controller\Annotations as Rest;
 
 /**
  * Faculty
@@ -76,7 +77,7 @@ class Faculty
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -99,7 +100,7 @@ class Faculty
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -112,6 +113,7 @@ class Faculty
      */
     public function addDepartment(Department $department)
     {
+        $department->setFaculty($this);
         $this->getDepartments()->add($department);
 
         return $this;
@@ -124,6 +126,7 @@ class Faculty
      */
     public function removeDepartment(Department $department)
     {
+        $department->setFaculty(null);
         $this->getDepartments()->removeElement($department);
 
         return $this;
@@ -148,7 +151,7 @@ class Faculty
     public function addUser(User $user)
     {
         $this->getUsers()->add($user);
-
+        $user->addFaculty($this);
         return $this;
     }
 
@@ -160,6 +163,7 @@ class Faculty
     public function removeUser(User $user)
     {
         $this->getUsers()->removeElement($user);
+        $user->removeFaculty($this);
 
         return $this;
     }

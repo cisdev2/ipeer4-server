@@ -72,7 +72,7 @@ class Department
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -95,7 +95,7 @@ class Department
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -126,6 +126,7 @@ class Department
     public function addCourse(Course $course)
     {
         $this->getCourses()->add($course);
+        $course->setDepartment($this);
 
         return $this;
     }
@@ -138,6 +139,7 @@ class Department
     public function removeCourse(Course $course)
     {
         $this->getCourses()->removeElement($course);
+        $course->setDepartment(null);
 
         return $this;
     }
