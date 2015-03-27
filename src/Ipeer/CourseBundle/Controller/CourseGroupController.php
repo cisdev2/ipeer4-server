@@ -168,7 +168,7 @@ class CourseGroupController extends Controller
      * @Rest\View(statusCode=204)
      *
      * @ApiDoc()
-     * @Route("/{id}/addMember/{user}", name="group_member_add")
+     * @Route("/{id}/members/{user}", name="group_member_add")
      * @Method("POST")
      */
     public function addMemberAction(Course $course, CourseGroup $group,  User $user)
@@ -203,7 +203,7 @@ class CourseGroupController extends Controller
      * @Rest\View(statusCode=204)
      *
      * @ApiDoc()
-     * @Route("/{id}/removeMember/{user}", name="group_member_delete")
+     * @Route("/{id}/members/{user}", name="group_member_delete")
      * @Method("DELETE")
      */
     public function removeMemberAction(CourseGroup $group, Course $course, User $user)
