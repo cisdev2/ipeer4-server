@@ -6,7 +6,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Client;
 use Symfony\Component\HttpFoundation\Response;
 
-class JSONTestCase extends WebTestCase
+class IpeerTestCase extends WebTestCase
 {
 
     /*
@@ -15,10 +15,27 @@ class JSONTestCase extends WebTestCase
     * =============================================
     */
 
+    protected $IpeerFixtures = array(
+        'Ipeer\UserBundle\DataFixtures\ORM\LoadUserData',
+        'Ipeer\CourseBundle\DataFixtures\ORM\LoadCourseData',
+        'Ipeer\CourseBundle\DataFixtures\ORM\LoadEnrollmentData',
+        'Ipeer\CourseBundle\DataFixtures\ORM\LoadGroupData',
+        'Ipeer\CourseBundle\DataFixtures\ORM\LoadDepartmentData',
+        'Ipeer\CourseBundle\DataFixtures\ORM\LoadFacultyData',
+    );
+
     /**
      * @var Client
      * */
     private $client;
+
+    /**
+     * Runs before each test class/file
+     */
+    public static function setUpBeforeClass()
+    {
+        fwrite(STDOUT, "\nStarted " . get_called_class() . "\n\n");
+    }
 
     /**
      * @param string $method The HTTP method for the request
@@ -52,7 +69,7 @@ class JSONTestCase extends WebTestCase
         $content = $response->getContent();
         if(!empty($content)) {
             $this->assertEquals(
-                $statusCode, $response->getStatusCode(), "\nDid not get the expected HTTP status code. Got this content: \n\n\n\n\n" . $content . ".....\n\n\n\n\n"
+                $statusCode, $response->getStatusCode(), "\nDid not get the expected HTTP status code. Got this content: \n\n\n" . $content . ".....\n\n\n"
             );
             $this->assertTrue(
                 $response->headers->contains('Content-Type', 'application/json'),

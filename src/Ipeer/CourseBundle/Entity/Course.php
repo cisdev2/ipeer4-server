@@ -56,12 +56,23 @@ class Course
     private $courseGroups;
 
     /**
+     * @var ArrayCollection|Department[]
+     *
+     * @ORM\ManyToMany(targetEntity="Department", inversedBy="courses")
+     * @ORM\JoinTable(name="courses_faculties")
+     *
+     * @Expose
+     **/
+    private $departments;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->enrollments = new ArrayCollection();
         $this->courseGroups = new ArrayCollection();
+        $this->departments = new ArrayCollection();
     }
 
     /**
@@ -163,5 +174,37 @@ class Course
         }
 
         return $this->courseGroups;
+    }
+
+    /**
+     * @param Department $department
+     * @return Course
+     */
+    public function addDepartment(Department $department)
+    {
+        $this->getDepartments()->add($department);
+
+        return $this;
+    }
+
+    /**
+     * @param Department $department
+     * @return Course
+     */
+    public function removeDepartment(Department $department)
+    {
+        $this->getDepartments()->removeElement($department);
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection|Department[]
+     */
+    public function getDepartments() {
+        if(null === $this->departments) {
+            $this->departments = new ArrayCollection();
+        }
+        return $this->departments;
     }
 }

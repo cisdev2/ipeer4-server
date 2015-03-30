@@ -21,10 +21,10 @@ class LoadUserData extends DataLoadingFixture implements OrderedFixtureInterface
             array("Sudo1", "SuperAdmin01", "sudo01@ipeer.ubc"), // id = 1; index = 0
             array("Sudo2", "SuperAdmin02", "sudo02@ipeer.ubc"),
 
-            array("Science", "Admin01", "scienceadmin@ipeer.ubc"),
-            array("Engineering", "Admin02", "engineeradmin@ipeer.ubc"),
-            array("Arts", "Admin03", "artsadmin@ipeer.ubc"),
-            array("Business", "Admin04", "businessadmin@ipeer.ubc"),
+            array("Science", "Admin01", "scienceadmin@ipeer.ubc", "Science"),
+            array("Engineering", "Admin02", "engineeradmin@ipeer.ubc", "Applied Science"),
+            array("Arts", "Admin03", "artsadmin@ipeer.ubc", "Arts"),
+            array("Business", "Admin04", "businessadmin@ipeer.ubc", "Business"),
 
             array("APSC", "Instructor01", "apscInstr@ipeer.ubc"), // id = 7; index = 6
             array("MECH", "Instructor02", "mechInstr@ipeer.ubc"),
@@ -68,6 +68,10 @@ class LoadUserData extends DataLoadingFixture implements OrderedFixtureInterface
             $user->setFirstName($userData[0]);
             $user->setLastName($userData[1]);
             $user->setEmail($userData[2]);
+
+            if(isset($userData[3])) {
+                $user->addFaculty($this->getReference('faculty-' . $userData[3]));
+            }
 
             $this->setReference('user-' . $userData[2], $user);
 

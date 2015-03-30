@@ -2,27 +2,21 @@
 
 namespace Ipeer\CourseBundle\Tests\Controller;
 
-use Ipeer\ApiUtilityBundle\Test\JSONTestCase;
+use Ipeer\ApiUtilityBundle\Test\IpeerTestCase;
 use Ipeer\CourseBundle\DataFixtures\ORM\LoadCourseData;
 use Ipeer\CourseBundle\DataFixtures\ORM\LoadGroupData;
 
-class CourseGroupControllerTest extends JSONTestCase
+class CourseGroupControllerTest extends IpeerTestCase
 {
     /*
      * =============================================
      * Valid Action Tests
-     * ============================================
+     * =============================================
      */
 
-    private $standardSampleData = array(
-        'Ipeer\UserBundle\DataFixtures\ORM\LoadUserData',
-        'Ipeer\CourseBundle\DataFixtures\ORM\LoadCourseData',
-        'Ipeer\CourseBundle\DataFixtures\ORM\LoadEnrollmentData',
-        'Ipeer\CourseBundle\DataFixtures\ORM\LoadGroupData',
-    );
-
-    public function testIndexActionNoGroups() {
-        $this->loadFixtures($this->standardSampleData);
+    public function testIndexActionNoGroups()
+    {
+        $this->loadFixtures($this->IpeerFixtures);
         $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('group', array('course' => 4)));
         $this->assertCount(0, $response['groups']);
     }
@@ -30,7 +24,8 @@ class CourseGroupControllerTest extends JSONTestCase
     /**
      * @depends testIndexActionNoGroups
      */
-    public function testIndexActionNoMembers() {
+    public function testIndexActionNoMembers()
+    {
         $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('group', array('course' => 4)));
         $this->assertCount(0, $response['groups']);
     }
@@ -38,7 +33,8 @@ class CourseGroupControllerTest extends JSONTestCase
     /**
      * @depends testIndexActionNoGroups
      */
-    public function testShowGroupAction() {
+    public function testShowGroupAction()
+    {
         $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('group', array('course' => 1)));
         $response = $response['groups'];
         $this->assertCount(2, $response);
@@ -49,7 +45,8 @@ class CourseGroupControllerTest extends JSONTestCase
     /**
      * @depends testShowGroupAction
      */
-    public function testShowMembersAction() {
+    public function testShowMembersAction()
+    {
         $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('group_show', array('course' => 1, 'id' => 1)));
         $this->assertEquals($response['group']['name'], 'APSC201-Group01');
         $response = $response['members'];
@@ -75,7 +72,8 @@ class CourseGroupControllerTest extends JSONTestCase
     /**
      * @depends testShowMembersAction
      */
-    public function testUpdateGroupAction() {
+    public function testUpdateGroupAction()
+    {
         $response = $this->getAndTestJSONResponseFrom("POST", $this->getUrl('group_update', array('course' => 1, 'id' => 1)),
             '{"name": "APSC201-NewGroup01"}');
         $this->assertEquals('APSC201-NewGroup01', $response['group']['name']);
@@ -86,7 +84,8 @@ class CourseGroupControllerTest extends JSONTestCase
     /**
      * @depends testUpdateGroupAction
      */
-    public function testAddMemberAction() {
+    public function testAddMemberAction()
+    {
         $this->getAndTestJSONResponseFrom("POST", $this->getUrl('group_member_add', array('course' => 1, 'id' => 1, 'user' => 21)), '', 204);
 
         $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('group_show', array('course' => 1, 'id' => 1)));
@@ -96,7 +95,8 @@ class CourseGroupControllerTest extends JSONTestCase
     /**
      * @depends testAddMemberAction
      */
-    public function testDeleteMemberAction() {
+    public function testDeleteMemberAction()
+    {
         $this->getAndTestJSONResponseFrom("DELETE", $this->getUrl('group_member_delete', array('course' => 1, 'id' => 1, 'user' => 21)), '', 204);
 
         $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('group_show', array('course' => 1, 'id' => 1)));
@@ -106,7 +106,8 @@ class CourseGroupControllerTest extends JSONTestCase
     /**
      * @depends testUpdateGroupAction
      */
-    public function testCreateGroupAction() {
+    public function testCreateGroupAction()
+    {
         $response = $this->getAndTestJSONResponseFrom("POST", $this->getUrl('group_create', array('course' => 1)), '{"name" : "APSC201-newgroup"}');
         $this->assertEquals($response['group']['name'], "APSC201-newgroup");
         $this->assertCount(0, $response['members']);
@@ -123,7 +124,8 @@ class CourseGroupControllerTest extends JSONTestCase
      *
      * @depends testCreateGroupAction
      */
-    public function testDeleteGroupAction($idOfNewGroup) {
+    public function testDeleteGroupAction($idOfNewGroup)
+    {
         $this->getAndTestJSONResponseFrom("DELETE", $this->getUrl('group_delete', array('course' => 1, 'id' => $idOfNewGroup)), '', 204);
         $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('group', array('course' => 1)));
         $response = $response['groups'];
@@ -133,11 +135,12 @@ class CourseGroupControllerTest extends JSONTestCase
     /*
      * =============================================
      * Invalid Action Tests
-     * ============================================
+     * =============================================
      */
 
-    public function testShowGroupsActionInvalid() {
-        $this->loadFixtures($this->standardSampleData);
+    public function testShowGroupsActionInvalid()
+    {
+        $this->loadFixtures($this->IpeerFixtures);
 
         // bad course id
         $this->getAndTestJSONResponseFrom("GET", $this->getUrl('group', array('course' => LoadCourseData::NUMBER_OF_COURSES * 2)), '', 404);
@@ -146,7 +149,8 @@ class CourseGroupControllerTest extends JSONTestCase
     /**
      * @depends testShowGroupsActionInvalid
      */
-    public function testShowMembersActionInvalid() {
+    public function testShowMembersActionInvalid()
+    {
         // bad course id
         $this->getAndTestJSONResponseFrom("GET", $this->getUrl('group_show', array('course' => LoadCourseData::NUMBER_OF_COURSES * 2, 'id' => 1)), '', 404);
         // mismatched group id (not in that course)
@@ -160,7 +164,8 @@ class CourseGroupControllerTest extends JSONTestCase
     /**
      * @depends testShowMembersActionInvalid
      */
-    public function testUpdateGroupActionInvalid() {
+    public function testUpdateGroupActionInvalid()
+    {
         // course not found
         $this->getAndTestJSONResponseFrom("POST", $this->getUrl('group_update', array('course' => LoadCourseData::NUMBER_OF_COURSES * 2, 'id' => 1)), '', 404);
         // group not found
@@ -175,7 +180,8 @@ class CourseGroupControllerTest extends JSONTestCase
         $this->getAndTestJSONResponseFrom("POST", $this->getUrl('group_update', array('course' => 1, 'id' => 4)), '{"name":""}', 400);
     }
 
-    public function testAddMemberActionInvalid() {
+    public function testAddMemberActionInvalid()
+    {
         // bad course
         $this->getAndTestJSONResponseFrom("POST", $this->getUrl('group_member_add', array('course' => LoadCourseData::NUMBER_OF_COURSES, 'id' => 1, 'user' => 21)), '', 404);
         // bad group
@@ -186,7 +192,8 @@ class CourseGroupControllerTest extends JSONTestCase
         $this->getAndTestJSONResponseFrom("POST", $this->getUrl('group_member_add', array('course' => 1, 'id' => 1, 'user' => 7)), '', 400);
     }
 
-    public function testCreateGroupActionInvalid() {
+    public function testCreateGroupActionInvalid()
+    {
         // bad course
         // (however it 400s because deserialization fails first
         $this->getAndTestJSONResponseFrom("POST", $this->getUrl('group_create', array('course' => LoadCourseData::NUMBER_OF_COURSES)), '', 400);
@@ -196,7 +203,8 @@ class CourseGroupControllerTest extends JSONTestCase
         $this->getAndTestJSONResponseFrom("POST", $this->getUrl('group_create', array('course' => 1)), '{"name":""}', 400);
     }
 
-    public function testDeleteMemberActionInvalid() {
+    public function testDeleteMemberActionInvalid()
+    {
         // bad course
         $this->getAndTestJSONResponseFrom("DELETE", $this->getUrl('group_member_delete', array('course' => LoadCourseData::NUMBER_OF_COURSES, 'id' => 1, 'user' => 18)), '', 404);
         // bad group
@@ -205,7 +213,8 @@ class CourseGroupControllerTest extends JSONTestCase
         $this->getAndTestJSONResponseFrom("DELETE", $this->getUrl('group_member_delete', array('course' => 1, 'id' => 1, 'user' => 21)), '', 404);
     }
 
-    public function testDeleteGroupActionInvalid() {
+    public function testDeleteGroupActionInvalid()
+    {
         // mismatch course with group
         $this->getAndTestJSONResponseFrom("DELETE", $this->getUrl('group_delete', array('course' => 2, 'id' => 1)), '', 404);
         // group doesn't exist

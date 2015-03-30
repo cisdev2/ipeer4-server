@@ -2,33 +2,30 @@
 
 namespace Ipeer\CourseBundle\Tests\Controller;
 
-use Ipeer\ApiUtilityBundle\Test\JSONTestCase;
+use Ipeer\ApiUtilityBundle\Test\IpeerTestCase;
 use Ipeer\CourseBundle\DataFixtures\ORM\LoadCourseData;
 
-class CourseControllerTest extends JSONTestCase {
+class CourseControllerTest extends IpeerTestCase {
 
     /*
      * =============================================
-     * Fixtures to load and helper functions
+     * Helper functions
      * =============================================
      */
 
-    private $standardSampleData = array(
-        'Ipeer\UserBundle\DataFixtures\ORM\LoadUserData',
-        'Ipeer\CourseBundle\DataFixtures\ORM\LoadCourseData',
-    );
-
-    private function assertCourseEquals($courseExpected, $courseActual) {
+    private function assertCourseEquals($courseExpected, $courseActual)
+    {
         $this->assertEquals($courseExpected[0], $courseActual['name']);
     }
 
     /*
      * =============================================
      * Valid Action Tests
-     * ============================================
+     * =============================================
      */
 
-    public function testIndexActionEmpty() {
+    public function testIndexActionEmpty()
+    {
         $this->loadFixtures(array());
         $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('course'));
         $this->assertCount(0, $response["courses"]);
@@ -37,8 +34,9 @@ class CourseControllerTest extends JSONTestCase {
     /**
      * @depends testIndexActionEmpty
      */
-    public function testIndexAction() {
-        $this->loadFixtures($this->standardSampleData);
+    public function testIndexAction()
+    {
+        $this->loadFixtures($this->IpeerFixtures);
 
         $response = $this->getAndTestJSONResponseFrom("GET", $this->getUrl('course'));
         $response = $response["courses"];
@@ -53,7 +51,8 @@ class CourseControllerTest extends JSONTestCase {
     /**
      * @depends testIndexAction
      */
-    public function testShowAction() {
+    public function testShowAction()
+    {
         $this->assertCourseEquals(array("APSC201"),
             $this->getAndTestJSONResponseFrom("GET", $this->getUrl('course_show', array('id' => 1))));
         $this->assertCourseEquals(array("MATH342"),
@@ -65,7 +64,8 @@ class CourseControllerTest extends JSONTestCase {
     /**
      * @depends testShowAction
      */
-    public function testUpdateAction() {
+    public function testUpdateAction()
+    {
         $route =  $this->getUrl('course_update', array('id' => 1));
         $this->getAndTestJSONResponseFrom('POST', $route,
             '{"name" : "Course1"}');
@@ -88,7 +88,8 @@ class CourseControllerTest extends JSONTestCase {
     /**
      * @depends testUpdateAction
      */
-    public function testCreateAction() {
+    public function testCreateAction()
+    {
         $route = $this->getUrl('course');
 
         $data = $this->getAndTestJSONResponseFrom("POST", $route,
@@ -109,8 +110,9 @@ class CourseControllerTest extends JSONTestCase {
     /*
      * No dependencies.
      */
-    public function testDeleteAction() {
-        $this->loadFixtures($this->standardSampleData);
+    public function testDeleteAction()
+    {
+        $this->loadFixtures($this->IpeerFixtures);
 
         $route =  $this->getUrl('course_delete', array('id' => 1));
         $this->getAndTestJSONResponseFrom('DELETE', $route, '', 204);
@@ -132,11 +134,12 @@ class CourseControllerTest extends JSONTestCase {
     /*
      * =============================================
      * Invalid Action Tests
-     * ============================================
+     * =============================================
      */
 
-    public function testShowActionInvalid() {
-        $this->loadFixtures($this->standardSampleData);
+    public function testShowActionInvalid()
+    {
+        $this->loadFixtures($this->IpeerFixtures);
 
         $route =  $this->getUrl('course_show', array('id' => 0));
         $this->getAndTestJSONResponseFrom("GET", $route, '', 404);
@@ -148,7 +151,8 @@ class CourseControllerTest extends JSONTestCase {
     /**
      * @depends testShowActionInvalid
      */
-    public function testCreateActionInvalid() {
+    public function testCreateActionInvalid()
+    {
         $route = $this->getUrl('course');
 
         // various corruptions of data (blank, empty object, missing various fields)
@@ -166,7 +170,8 @@ class CourseControllerTest extends JSONTestCase {
     /**
      * @depends testCreateActionInvalid
      */
-    public function testUpdateActionInvalid() {
+    public function testUpdateActionInvalid()
+    {
         $route = $this->getUrl('course_update', array('id' => 1));
 
         // various corruptions of data (blank, empty object, missing various fields)
@@ -193,7 +198,8 @@ class CourseControllerTest extends JSONTestCase {
     /**
      * @depends testUpdateActionInvalid
      */
-    public function testDeleteActionInvalid() {
+    public function testDeleteActionInvalid()
+    {
         $route =  $this->getUrl('course_delete', array('id' => LoadCourseData::NUMBER_OF_COURSES * 2 ));
         $this->getAndTestJSONResponseFrom('DELETE', $route, '', 404);
 

@@ -149,10 +149,14 @@ class Enrollment
 
     /**
      * @param CourseGroup $courseGroup
+     *
+     * @return Enrollment
      */
     public function removeCourseGroup(CourseGroup $courseGroup)
     {
         $this->getCourseGroups()->removeElement($courseGroup);
+
+        return $this;
     }
 
     /**
@@ -161,7 +165,7 @@ class Enrollment
     public function getCourseGroups()
     {
         if(null === $this->courseGroups) {
-            // needed if object is deserialized and constructor get bypassed
+            // needed if object is deserialized and constructor gets bypassed
             $this->courseGroups = new \Doctrine\Common\Collections\ArrayCollection();
         }
         return $this->courseGroups;
