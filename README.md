@@ -19,9 +19,15 @@ Development Notes
 
 See the [/doc](/doc) directory for documentation and development notes.
 
-Knowledge of the following topics is need to work on the server-side iPeer4 code. If you are a UBC 
+Knowledge of the following topics is needed to work on the server-side iPeer4 code. UBC staff can get access to some nice tutorials on these topics at [Lynda.com](http://www.lynda.com/):
 
-Resources for Symfony and major bundles/technologies used in this application:
+- Git
+- PHP
+- MySQL (or another relational database)
+- Symfony Framework
+- RESTful Services & HTTP
+
+Resources for Symfony and main bundles/technologies used in this application:
 
 - [The Symfony Book](http://symfony.com/doc/current/book/index.html)
 - [DoctrineBundle](http://symfony.com/doc/master/bundles/DoctrineBundle/index.html)
