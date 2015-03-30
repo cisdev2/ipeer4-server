@@ -34,7 +34,7 @@ class IpeerTestCase extends WebTestCase
      */
     public static function setUpBeforeClass()
     {
-        fwrite(STDOUT, "\nStarted " . get_called_class() . "\n\n");
+        fwrite(STDOUT, "\nStarted " . get_called_class() . "\n:");
     }
 
     /**
