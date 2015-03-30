@@ -34,7 +34,7 @@ class IpeerTestCase extends WebTestCase
      */
     public static function setUpBeforeClass()
     {
-        fwrite(STDOUT, "\nStarted " . get_called_class() . "\n:");
+        fwrite(STDOUT, "\nStarted " . get_called_class() . ":\n");
     }
 
     /**
@@ -47,7 +47,7 @@ class IpeerTestCase extends WebTestCase
      */
     protected function getAndTestJSONResponseFrom($method, $route, $body = '', $statusCode = 200, $decode = true)
     {
-        if($this->client == null) {
+        if($this->client === null) {
             $this->client = static::createClient();
         }
 

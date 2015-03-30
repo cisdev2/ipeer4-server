@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Ipeer\UserBundle\Entity\User;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

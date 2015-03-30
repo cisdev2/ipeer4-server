@@ -60,7 +60,7 @@ For tinkering, you can use the sandbox at `/api/doc`, a command line HTTP client
 Database
 ------------------------
 
-When running for the first time, setup the database parameters in `app/config/parameters.yml`.
+When running for the first time, copy `app/config/parameters.yml.dist` to `app/config/parameters.yml` and setup the database credentials.
 
 Also run the following the create the database and tables for you:
 
