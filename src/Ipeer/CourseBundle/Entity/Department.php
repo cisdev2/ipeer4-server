@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -47,7 +48,9 @@ class Department
     private $faculty;
 
     /**
-     * @ORM\OneToMany(targetEntity="Course", mappedBy="department")
+     * @ORM\ManyToMany(targetEntity="Course", mappedBy="departments")
+     *
+     * @Expose()
      **/
     private $courses;
 
@@ -128,7 +131,7 @@ class Department
     public function addCourse(Course $course)
     {
         $this->getCourses()->add($course);
-        $course->setDepartment($this);
+        $course->addDepartment($this);
 
         return $this;
     }
@@ -141,8 +144,7 @@ class Department
     public function removeCourse(Course $course)
     {
         $this->getCourses()->removeElement($course);
-        $course->setDepartment(null);
-
+        $course->removeDepartment($this);
         return $this;
     }
 

@@ -116,8 +116,8 @@ class Faculty
      */
     public function addDepartment(Department $department)
     {
-        $department->setFaculty($this);
         $this->getDepartments()->add($department);
+        $department->setFaculty($this);
 
         return $this;
     }
@@ -129,7 +129,6 @@ class Faculty
      */
     public function removeDepartment(Department $department)
     {
-        $department->setFaculty(null);
         $this->getDepartments()->removeElement($department);
 
         return $this;

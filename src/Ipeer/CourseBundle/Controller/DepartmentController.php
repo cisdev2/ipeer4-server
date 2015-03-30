@@ -85,10 +85,6 @@ class DepartmentController extends Controller
      */
     public function createAction(Department $department, Faculty $faculty)
     {
-        if ($department->getFaculty() != $faculty) {
-            throw new NotFoundHttpException();
-        }
-
         $faculty->addDepartment($department);
         $em = $this->getDoctrine()->getManager();
         $em->persist($department);
@@ -117,7 +113,7 @@ class DepartmentController extends Controller
      */
     public function updateAction(Department $targetDepartment, Department $department, Faculty $faculty)
     {
-        if ($department->getFaculty() != $faculty) {
+        if ($targetDepartment->getFaculty() != $faculty) {
             throw new NotFoundHttpException();
         }
 
@@ -208,7 +204,7 @@ class DepartmentController extends Controller
         if ($department->getFaculty() != $faculty) {
             throw new NotFoundHttpException();
         }
-        if($course->getDepartment() != $department) {
+        if(!$course->getDepartments()->contains($department)) {
             throw new NotFoundHttpException();
         }
 

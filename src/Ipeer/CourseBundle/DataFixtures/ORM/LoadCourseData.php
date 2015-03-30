@@ -34,7 +34,7 @@ class LoadCourseData extends DataLoadingFixture implements OrderedFixtureInterfa
             $course = new Course();
             $course->setName($courseData[0]);
             if(null !== $courseData[1]) {
-                $course->setDepartment($this->getReference('department-' . $courseData[1]));
+                $this->getReference('department-' . $courseData[1])->addCourse($course);
             }
             $this->setReference('course-' . $courseData[0], $course);
 
