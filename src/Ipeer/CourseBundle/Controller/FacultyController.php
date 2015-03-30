@@ -133,6 +133,7 @@ class FacultyController extends Controller
     public function addUserAction(Faculty $faculty, User $user)
     {
         $faculty->addUser($user);
+        $this->getDoctrine()->getManager()->flush();
     }
 
     /**
@@ -154,6 +155,7 @@ class FacultyController extends Controller
     {
         if($user->getFaculties()->contains($faculty)) {
             $faculty->removeUser($user);
+            $this->getDoctrine()->getManager()->flush();
         } else {
             throw new NotFoundHttpException();
         }
