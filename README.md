@@ -19,6 +19,8 @@ Development Notes
 
 See the [/doc](/doc) directory for documentation and development notes.
 
+General debug tip: Delete the `/app/cache` folder if you change routing, database structure, or entity-ORM definitions.
+
 Knowledge of the following topics is needed to work on the server-side iPeer4 code. UBC staff can get access to some nice tutorials on these topics at [Lynda.com](http://www.lynda.com/):
 
 - Git
