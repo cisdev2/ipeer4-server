@@ -4,6 +4,9 @@ Current Todos
 ============================
 
 - Improve the way entity updates are handled (for all controllers)
+    - Currently the merge() approach used by `Ipeer\UserBundle\User` the leading choice
+        - This choice may be inefficient in SQL if only one field is being updated
+        - Figure out a way to control which fields are allowed to be updated (this is the "reverse" version of the "conditional-based deserialization rules" listed in this section)
 - Test cascading deletes wherever relevant (eg. course delete triggers groups-within-that-course delete)
     - If not working, choose a good way to do that (possibly via doctrine entity annotations)
 - Review PHPdoc and APIdoc for entities and controllers
