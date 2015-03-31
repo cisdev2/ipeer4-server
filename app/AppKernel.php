@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle(),
             new Hautelook\TemplatedUriBundle\HautelookTemplatedUriBundle(),
             new Bazinga\Bundle\RestExtraBundle\BazingaRestExtraBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
             new Ipeer\UserBundle\IpeerUserBundle(),
             new Ipeer\CourseBundle\IpeerCourseBundle(),
             new Ipeer\ApiUtilityBundle\IpeerApiUtilityBundle(),

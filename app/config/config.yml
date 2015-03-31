@@ -19,7 +19,7 @@ framework:
         engines: ['twig'] # Needed for non API routes and Symphony profiler and debug tools
     default_locale:  "%locale%"
     trusted_proxies: ~
-    session:         false
+    session:         true
     fragments:       ~
 
 # Doctrine Configuration - see parameters.yml
@@ -139,3 +139,8 @@ nelmio_api_doc:
         request_format:
             formats:
                 json: application/json
+
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: Ipeer\UserBundle\Entity\User

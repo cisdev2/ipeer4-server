@@ -51,11 +51,14 @@ class UserController extends Controller
      */
     public function createAction(User $user)
     {
+        $newUser = new User();
+        $newUser->merge($user);
+        $newUser->setPassword(md5(mt_rand())); // needs to be updated
         $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
+        $em->persist($newUser);
         $em->flush();
 
-        return $user;
+        return $newUser;
     }
 
     /**
@@ -77,11 +80,11 @@ class UserController extends Controller
     /**
      * Edits an existing User entity.
      *
-     * @param User $user The data the user submitted
-     * @ParamConverter("user", converter="fos_rest.request_body")
+     * @param User $update The data the user submitted
+     * @ParamConverter("update", converter="fos_rest.request_body")
      *
-     * @param User $id The entity to be updated
-     * @ParamConverter("id", class="IpeerUserBundle:User")
+     * @param User $user The entity to be updated
+     * @ParamConverter("user", class="IpeerUserBundle:User")
      *
      * @return array
      *
@@ -89,16 +92,10 @@ class UserController extends Controller
      * @Route("/{id}", name="user_update")
      * @Method("POST")
      */
-    public function updateAction(User $id, User $user)
+    public function updateAction(User $user, User $update)
     {
-        // inject the id value from the URL
-        // (ensures update instead of creating a new duplicate)
-        $user->setId($id->getId());
-
-        $em = $this->getDoctrine()->getManager();
-        $em->merge($user);
-        $em->flush();
-
+        $user->merge($update);
+        $this->getDoctrine()->getManager()->flush();
         return $user;
     }
 

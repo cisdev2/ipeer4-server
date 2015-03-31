@@ -9,6 +9,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Ipeer\CourseBundle\Entity\Enrollment;
 use Doctrine\Common\Collections\ArrayCollection;
 use Ipeer\CourseBundle\Entity\Faculty;
+use FOS\UserBundle\Model\User as BaseUser;
+
 
 /**
  * User
@@ -18,7 +20,7 @@ use Ipeer\CourseBundle\Entity\Faculty;
  *
  * @ExclusionPolicy("all")
  */
-class User
+class User extends BaseUser
 {
     /**
      * @var integer
@@ -29,7 +31,7 @@ class User
      *
      * @Expose
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
@@ -58,12 +60,17 @@ class User
      *
      * @Assert\Email()
      * @Assert\NotBlank()
-     *
-     * @ORM\Column(name="email", type="string", length=255)
+     * @Expose
+     */
+    protected $email;
+
+    /**
+     * @var string
+     * @Assert\NotBlank()
      *
      * @Expose
      */
-    private $email;
+    protected $username;
 
     /**
      * @var ArrayCollection
@@ -89,27 +96,9 @@ class User
      */
     public function __construct()
     {
+        parent::__construct();
         $this->enrollments = new ArrayCollection();
         $this->faculties = new ArrayCollection();
-    }
-
-    /**
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param integer $id
-     * @return User
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     /**
@@ -124,7 +113,7 @@ class User
     }
 
     /**
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
@@ -143,30 +132,11 @@ class User
     }
 
     /**
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
         return $this->lastName;
-    }
-
-    /**
-     * @param string $email
-     * @return User
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * @return string 
-     */
-    public function getEmail()
-    {
-        return $this->email;
     }
 
     /**
@@ -193,7 +163,7 @@ class User
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getEnrollments()
     {
@@ -233,5 +203,19 @@ class User
             $this->faculties = new ArrayCollection();
         }
         return $this->faculties;
+    }
+
+    /**
+     * @param User $update
+     * @return User
+     */
+    public function merge(User $update)
+    {
+        $this->setFirstName($update->getFirstName());
+        $this->setLastName($update->getLastName());
+        $this->setEmail($update->getEmail());
+        $this->setUsername($update->getUsername());
+
+        return $this;
     }
 }

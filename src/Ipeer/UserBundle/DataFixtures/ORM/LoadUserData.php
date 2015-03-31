@@ -65,9 +65,11 @@ class LoadUserData extends DataLoadingFixture implements OrderedFixtureInterface
 
         foreach($usersData as $userData) {
             $user = new User();
+            $user->setUsername($userData[1]);
             $user->setFirstName($userData[0]);
             $user->setLastName($userData[1]);
             $user->setEmail($userData[2]);
+            $user->setPassword($userData[2]);
 
             if(isset($userData[3])) {
                 $user->addFaculty($this->getReference('faculty-' . $userData[3]));

@@ -28,7 +28,8 @@
         "willdurand/rest-extra-bundle": "~1.0",
         "nelmio/cors-bundle": "~1.4",
         "doctrine/doctrine-fixtures-bundle": "2.2.*",
-        "phpunit/phpunit": "~4.5"
+        "phpunit/phpunit": "~4.5",
+        "friendsofsymfony/user-bundle": "~2.0@dev"
     },
     "conflict": {
         "symfony/routing": "2.4.1"

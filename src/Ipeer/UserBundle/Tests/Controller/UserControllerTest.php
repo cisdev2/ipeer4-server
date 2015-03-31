@@ -16,6 +16,7 @@ class UserControllerTest extends IpeerTestCase
         $this->assertEquals($userExpected[0], $userActual['first_name']);
         $this->assertEquals($userExpected[1], $userActual['last_name']);
         $this->assertEquals($userExpected[2], $userActual['email']);
+        $this->assertEquals($userExpected[1], $userActual['username']);
     }
 
     /*
@@ -72,22 +73,22 @@ class UserControllerTest extends IpeerTestCase
     {
         $route =  $this->getUrl('user_update', array('id' => 1));
         $this->getAndTestJSONResponseFrom('POST', $route,
-            '{"id": 1, "first_name": "Update1", "last_name": "Last1", "email": "testcreateaction1@ipeer.ubc"}');
+            '{"id": 1, "first_name": "Update1", "last_name": "Last1", "username": "Last1", "email": "testupdateaction1@ipeer.ubc"}');
         $route =  $this->getUrl('user_update', array('id' => 10));
         $this->getAndTestJSONResponseFrom('POST', $route,
-            '{"first_name": "Update2", "last_name": "Last2", "email": "testcreateaction2@ipeer.ubc"}');
+            '{"first_name": "Update2", "last_name": "Last2", "username": "Last2", "email": "testupdateaction2@ipeer.ubc"}');
         $route =  $this->getUrl('user_update', array('id' => 20));
         $this->getAndTestJSONResponseFrom('POST', $route,
-            '{"first_name": "Update3", "last_name": "Last3", "email": "testcreateaction3@ipeer.ubc"}');
+            '{"first_name": "Update3", "last_name": "Last3", "username": "Last3", "email": "testupdateaction3@ipeer.ubc"}');
 
         $route =  $this->getUrl('user');
         $response = $this->getAndTestJSONResponseFrom('GET', $route);
         $data = $response["users"];
         $this->assertCount(LoadUserData::NUMBER_OF_USERS, $data); //still same amount of users; new ones should not have been created
 
-        $this->assertUserEquals(array("Update1", "Last1", "testcreateaction1@ipeer.ubc"), $data[1-1]);
-        $this->assertUserEquals(array("Update2", "Last2", "testcreateaction2@ipeer.ubc"), $data[10-1]);
-        $this->assertUserEquals(array("Update3", "Last3", "testcreateaction3@ipeer.ubc"), $data[20-1]);
+        $this->assertUserEquals(array("Update1", "Last1", "testupdateaction1@ipeer.ubc"), $data[1-1]);
+        $this->assertUserEquals(array("Update2", "Last2", "testupdateaction2@ipeer.ubc"), $data[10-1]);
+        $this->assertUserEquals(array("Update3", "Last3", "testupdateaction3@ipeer.ubc"), $data[20-1]);
     }
 
     /**
@@ -98,12 +99,12 @@ class UserControllerTest extends IpeerTestCase
         $route =  $this->getUrl('user');
 
         $data = $this->getAndTestJSONResponseFrom("POST", $route,
-            '{"first_name": "Test User", "last_name": "Action Test", "email": "testcreateaction@ipeer.ubc"}');
-        $this->assertUserEquals(array("Test User", "Action Test", "testcreateaction@ipeer.ubc"), $data);
+            '{"first_name": "Test User", "last_name": "ActionTest", "username": "ActionTest", "email": "testcreateaction@ipeer.ubc"}');
+        $this->assertUserEquals(array("Test User", "ActionTest", "testcreateaction@ipeer.ubc"), $data);
         $this->assertEquals(1 + LoadUserData::NUMBER_OF_USERS, $data['id']);
 
         $data = $this->getAndTestJSONResponseFrom("POST", $route,
-            '{"first_name": "Test2", "last_name": "ActionTwo", "email": "testcreateaction2@ipeer.ubc"}');
+            '{"first_name": "Test2", "last_name": "ActionTwo", "username": "ActionTwo", "email": "testcreateaction2@ipeer.ubc"}');
         $this->assertUserEquals(array("Test2", "ActionTwo", "testcreateaction2@ipeer.ubc"), $data);
         $this->assertEquals(2 + LoadUserData::NUMBER_OF_USERS, $data['id']);
 
