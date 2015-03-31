@@ -11,7 +11,9 @@ matrix:
     allow_failures:
         - php: nightly
 
-before_script: composer install --prefer-source
+before_script:
+  - cp ./app/config/parameters.yml.dist ./app/config/parameters.yml
+  - composer install --prefer-source
 
 after_failure: "cat /home/travis/build/gimler/symfony-rest-edition/app/logs/test.log"
 
