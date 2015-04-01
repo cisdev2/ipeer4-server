@@ -20,7 +20,7 @@ use FOS\UserBundle\Model\User as BaseUser;
  *
  * @ExclusionPolicy("all")
  */
-class User extends BaseUser
+class User extends BaseUser implements \Serializable
 {
     /**
      * @var integer
@@ -85,8 +85,6 @@ class User extends BaseUser
      *
      * @ORM\ManyToMany(targetEntity="Ipeer\CourseBundle\Entity\Faculty", inversedBy="users")
      * @ORM\JoinTable(name="users_faculties")
-     *
-     * @Expose()
      */
     private $faculties;
 
