@@ -12,6 +12,10 @@ matrix:
         - php: nightly
         - php: 5.6 #See https://github.com/schmittjoh/serializer/issues/283
 
+cache:
+  directories:
+    - vendor
+
 before_script:
   - cp ./app/config/parameters.yml.dist ./app/config/parameters.yml
   - composer install --prefer-source
