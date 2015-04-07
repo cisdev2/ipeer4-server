@@ -35,6 +35,7 @@ Resources for Symfony and main bundles/technologies used in this application:
 - [DoctrineBundle](http://symfony.com/doc/master/bundles/DoctrineBundle/index.html)
 - [Doctrine ORM](http://www.doctrine-project.org/projects/orm.html)
 - [DoctrineFixturesBundle](http://symfony.com/doc/master/bundles/DoctrineFixturesBundle/index.html)
+- [FOSUserBundle](https://github.com/FriendsOfSymfony/FOSUserBundle)
 - [FOSRestBundle](http://symfony.com/doc/master/bundles/FOSRestBundle/index.html)
 - [JMSSerializerBundle](http://jmsyst.com/bundles/JMSSerializerBundle)
 - [JMSSerializer](http://jmsyst.com/libs/serializer) and its [annotations](http://jmsyst.com/libs/serializer/master/reference/annotations)
