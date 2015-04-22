@@ -10,6 +10,8 @@ Current Todos
 - Review API design
     - http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
     - https://pages.apigee.com/rs/apigee/images/api-design-ebook-2012-03.pdf
+    - the API should support query parameters to only return a subset of values that match them (eg. a limit of return results, pagination, certain fields match a certain expression for searching, etc)
+    - some API endpoints should allow for "batch operations" (for example, you can post multiple user updates at once instead of one update per request)
 - Improve error messages returned from server
     - Could be used client-side or even in debugging/testing
 - Test cascading deletes wherever relevant (eg. course delete triggers groups-within-that-course delete)
