@@ -1,5 +1,7 @@
 This document is a compilation of notes from contributors, [CTLT](http://ctlt.ubc.ca/) meetings and consultations with users:
 
+*** Most of these points should be turned into issues, milestones, etc ***
+
 Current Todos
 ============================
 
@@ -35,6 +37,7 @@ Current Todos
     - Note: jmsserializer has the "groups" features - check whether there is a way to specify the group via annotations in a controller
     - Purpose 1: When some entity properties should not be deserialized for a user of low privilege level
     - Purpose 2: When entities are in a relationship, the referenced object should be deserialized differently (eg. when a faculty lists its departments, the departments should be serialized differently from when they are accessed directly)
+- Check `config.yml` and other configuration files for redundant settings, development vs production settings, etc
 
 Remaining Features
 ============================
@@ -45,13 +48,14 @@ Not listed in any particular order:
     - Use Symfony tokens
     - Use ACL for data-specific access
     - Permissions manager or configuration (similar to iPeer3 permissions manager)
-    - OAuth access
+    - OAuth access ?
     - Encourage whitelist approach instead of blacklisting
 - New evaluation event logic
     - Within-group (existing)
     - Self-evaluation only (new)
     - Evaluate another group
         - Evaluate X other groups
+    - Think of a way to deal with the situtation where many groups have the same event settings, but they take place at slightly different times (eg. CHBE lab courses)
 - Revised evaluation template system
     - Implement creation of templates
     - Implement completion (by students/tutors) of templates
@@ -62,6 +66,7 @@ Not listed in any particular order:
 - Add new role types
     - "UBC Grader" equivalent -> able to see results, but not able to create events, etc
     - "UBC Builder" equivalent -> able to create events, but cannot see results
+    - Course roles might need to be abstracted to another entity/class
 - Revised emailing system
     - Rethink email templates (possibly remove the option in some contexts)
     - Create email at various stages in process (event started, due date approaching, results availability)
@@ -88,10 +93,11 @@ Not listed in any particular order:
     - Way to deal with group formation in multi-section courses where students can switch sections for a while
 - Implement missing user management features:
     - Edit own profile
-    - Faculties and departments
+    - Faculties and departments (that the user belongs to)
     - Merging users
     - Importing students/users
     - Granting system wide statuses
+- Create an application installer (database configurations, copies / brings in the frontend so it gets served by Symfony)
 
 Big Picture / Long Term Ideas
 ===========================
