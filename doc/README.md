@@ -1,6 +1,6 @@
 This document is a compilation of notes from contributors, [CTLT](http://ctlt.ubc.ca/) meetings and consultations with users:
 
-*** Most of these points should be turned into issues, milestones, etc ***
+***Most of these points should be turned into issues, milestones, etc***
 
 Current Todos
 ============================
@@ -70,7 +70,7 @@ Not listed in any particular order:
 - Revised emailing system
     - Rethink email templates (possibly remove the option in some contexts)
     - Create email at various stages in process (event started, due date approaching, results availability)
-    - Instructors should access a per-course log to see the history of sent emails (to answer the question "Am I spamming students?"
+    - Instructors should access a per-course log to see the history of sent emails (to answer the question "Am I spamming students?")
 - Help & Resources Website:
     - The UBC CIS should develop a website to encourage better use of iPeer and peer evaluation in general
     - The site could also serve as the help/support/documentation resource
@@ -97,12 +97,14 @@ Not listed in any particular order:
     - Merging users
     - Importing students/users
     - Granting system wide statuses
+    - Each student's page lists the evaluations they completed and their results from it (tied in with the goal to track student progress over time)
 - Create an application installer (database configurations, copies / brings in the frontend so it gets served by Symfony)
 
 Big Picture / Long Term Ideas
 ===========================
 
 - Track student over time (over various courses)
+    - Some sort of overview/export at the cohort level
 - Get TLEF funding to continue development
 - Once the majority of the code has been written, the code should be (further) modularized and decoupled, so we end up with bundles that are reusable (potentially by others) outside the iPeer context
 - LTI integration (eg. edX, or iframe in Blackboard)
