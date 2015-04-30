@@ -63,7 +63,7 @@ Database
 
 When running for the first time, copy `app/config/parameters.yml.dist` to `app/config/parameters.yml` and setup the database credentials.
 
-Also run the following the create the database and tables for you:
+Also run the following to create the database and tables for you:
 
     php app/console doctrine:database:create
     php app/console doctrine:schema:update --force
@@ -83,6 +83,6 @@ Tests are automatically run at Travis CI: [https://travis-ci.org/cisdev2/ipeer4-
 
 Travis can take a while to run, so manually testing the code as you write is recommend.
 
-Tests can be run with `phpunit`. They run on a different database (separate SQLite), so they don't affect the main one. Change `src` to a more specific path/file if you want to run a specific test. The `-c app` loads the required test config file from the `app` folder:
+Tests can be run with `phpunit`. They run on a different database (local SQLite), so they don't affect the main one. Change `src` to a more specific path/file if you want to run a specific test. The `-c app` loads the Symfony test config file from the `app` folder:
 
     phpunit -c app src
