@@ -1,7 +1,11 @@
 iPeer v4 Server
 ========================
 
+
+
 **Master branch**
+
+*The links to Travis and CodeClimate should be updated once the repository transfers*
 
 [![Build Status](https://travis-ci.org/cisdev2/ipeer4-server.svg?branch=master)](https://travis-ci.org/cisdev2/ipeer4-server)
 
